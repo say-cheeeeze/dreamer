@@ -1,0 +1,27 @@
+spring:
+  web:
+    resources:
+      add-mappings: true
+  application:
+    name: bootjpa1
+  mvc:
+    static-path-pattern: /static/**
+    view:
+      suffix: .html
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/dreamer?useSSL=false&characterEncoding=UTF-8
+    username: yj
+    password: 1234
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQLDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+server:
+  port: 8080
+
