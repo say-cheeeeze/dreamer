@@ -1,6 +1,5 @@
-package com.cheeeeze.bootjpa1.web.user.vo;
+package com.cheeeeze.bootjpa1.web.remnant.vo;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.*;
