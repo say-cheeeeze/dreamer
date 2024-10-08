@@ -2,49 +2,47 @@ package com.cheeeeze.bootjpa1.web.remnant.vo;
 
 import java.time.LocalDateTime;
 
+import com.cheeeeze.bootjpa1.web.util.BaseTimeEntity;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Getter
 @Entity
+@NoArgsConstructor( access = AccessLevel.PROTECTED )
 @Table( name = "REMNANT")
-public class RemnantInfo {
+public class RemnantInfo extends BaseTimeEntity {
 	
 	@Id
 	@GeneratedValue( strategy = GenerationType.IDENTITY )
 	private Long id;
 	private String name;
 	private String grade;
-	private LocalDateTime inputDate;
-	private LocalDateTime updateDate;
+	private String sex;
 	
-	public Long getId() {
-		return id;
+	public void setSex( String sex ) {
+		this.sex = sex;
 	}
 	
 	public void setId( Long id ) {
 		this.id = id;
 	}
 	
-	public String getName() {
-		return name;
-	}
-	
 	public void setName( String name ) {
 		this.name = name;
-	}
-	
-	public String getGrade() {
-		return grade;
 	}
 	
 	public void setGrade( String grade ) {
 		this.grade = grade;
 	}
 	
-	@Override public String toString() {
-		return "RemnantInfo{" +
-			   "id=" + id +
-			   ", name='" + name + '\'' +
-			   ", grade='" + grade + '\'' +
-			   '}';
+	@Builder
+	public RemnantInfo( Long id, String name, String grade, String sex ) {
+		this.id = id;
+		this.name = name;
+		this.grade = grade;
+		this.sex = sex;
 	}
 }

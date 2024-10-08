@@ -9,19 +9,30 @@ spring:
     view:
       suffix: .html
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/dreamer?useSSL=false&characterEncoding=UTF-8
-    username: yj
-    password: 1234
+    hikari:
+      username: yj
+      password: 1234
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      jdbc-url: jdbc:mysql://localhost:3306/dreamer?useSSL=false&characterEncoding=UTF-8
+      maximum-pool-size: 3
   jpa:
     database: mysql
     database-platform: org.hibernate.dialect.MySQLDialect
-    show-sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update # create-drop, update, none, validate
     properties:
       hibernate:
+        highlight_sql: true
         format_sql: true
+        show_sql: true
+        use_sql_comments: true
+        generate_statistics: false
+    generate-ddl: false
+    open-in-view: false
 server:
   port: 8080
 
+logging:
+  level:
+    com.zaxxer.hikari.pool.HikariPool: debug
+    org.hibernate.orm.jdbc.bind: trace

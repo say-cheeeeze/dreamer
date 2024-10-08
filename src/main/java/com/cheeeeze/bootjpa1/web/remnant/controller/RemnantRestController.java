@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.cheeeeze.bootjpa1.web.remnant.vo.RemnantInfo;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +26,18 @@ public class RemnantRestController {
 		Map<String, Object> map = new HashMap<>();
 		map.put( "status", HttpStatus.OK.value() );
 		map.put( "list", strings );
+		return ResponseEntity.ok( map );
+	}
+	
+	@PostMapping( "regist" )
+	public ResponseEntity<?> regist( @RequestBody RemnantInfo remnantInfo ) {
+		
+		System.out.println( "new remnant regist" + remnantInfo );
+		
+		Map<String, Object> map = new HashMap<>();
+		
+		map.put( "status", HttpStatus.OK.value() );
+		map.put( "remnant", remnantInfo );
 		return ResponseEntity.ok( map );
 	}
 }
