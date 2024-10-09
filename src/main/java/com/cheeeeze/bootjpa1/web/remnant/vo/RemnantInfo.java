@@ -1,8 +1,7 @@
 package com.cheeeeze.bootjpa1.web.remnant.vo;
 
-import java.time.LocalDateTime;
-
 import com.cheeeeze.bootjpa1.web.util.BaseTimeEntity;
+import com.cheeeeze.bootjpa1.web.util.Gender;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -20,29 +19,31 @@ public class RemnantInfo extends BaseTimeEntity {
 	private Long id;
 	private String name;
 	private String grade;
-	private String sex;
-	
-	public void setSex( String sex ) {
-		this.sex = sex;
-	}
-	
-	public void setId( Long id ) {
-		this.id = id;
-	}
-	
-	public void setName( String name ) {
-		this.name = name;
-	}
-	
-	public void setGrade( String grade ) {
-		this.grade = grade;
-	}
+	@Enumerated(EnumType.STRING)
+	private Gender gender;
 	
 	@Builder
-	public RemnantInfo( Long id, String name, String grade, String sex ) {
+	public RemnantInfo( Long id, String name, String grade, Gender gender ) {
 		this.id = id;
 		this.name = name;
 		this.grade = grade;
-		this.sex = sex;
+		this.gender = gender;
+	}
+	
+	@Override public String toString() {
+		return "RemnantInfo{" +
+			   "id=" + id +
+			   ", name='" + name + '\'' +
+			   ", grade='" + grade + '\'' +
+			   ", inputDate='" + getInputDate() + '\'' +
+			   ", updateDate='" + getUpdateDate() + '\'' +
+			   ", gender=" + gender +
+			   '}';
+	}
+	
+	public void updateRemnantInfo( String name, String grade, Gender gender ) {
+		this.name = name;
+		this.grade = grade;
+		this.gender = gender;
 	}
 }

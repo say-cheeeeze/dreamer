@@ -17,14 +17,46 @@ repositories {
 	mavenCentral()
 }
 
+// Querydsl 빌드 옵션 (옵셔널)
+def querydslDir = 'src/main/generated'
+
+// querydsl QClass 파일 생성 위치를 지정
+tasks.withType(JavaCompile).configureEach {
+	options.getGeneratedSourceOutputDirectory().set(file(querydslDir))
+}
+
+// java source set 에 querydsl QClass 위치 추가
+sourceSets {
+	main.java.srcDirs += [querydslDir]
+}
+
+// gradle clean 시에 QClass 디렉토리 삭제
+clean {
+	delete file(querydslDir)
+}
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
+
+	/* QueryDSL :: query domain specific language */
+	// 스프링 부트 3.0 이상
+	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+	implementation "com.querydsl:querydsl-core"
+	implementation "com.querydsl:querydsl-collections"
+
+	// querydsl JPAAnnotationProcessor 사용 지정
+	annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
+	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
 	compileOnly 'org.projectlombok:lombok'
+	testCompileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.mysql:mysql-connector-j'
+
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 	annotationProcessor 'org.projectlombok:lombok'
 }

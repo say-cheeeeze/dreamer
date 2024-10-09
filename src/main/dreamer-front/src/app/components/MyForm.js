@@ -7,7 +7,7 @@ import { useState } from "react";
 export default function MyForm() {
 	
 	const [ name, setName ] = useState( '' );
-	const [ sex, setSex ] = useState( '' );
+	const [ gender, setGender ] = useState( '' );
 	const [ grade, setGrade ] = useState( '5' );
 	
 	let minWidth = 'min-width-5rem';
@@ -16,8 +16,8 @@ export default function MyForm() {
 		setName( e.target.value )
 	}
 	
-	function onChangeSex( e ) {
-		setSex( e.target.value )
+	function onChangeGender( e ) {
+		setGender( e.target.value )
 	}
 	
 	function onChangeGrade( e ) {
@@ -33,7 +33,7 @@ export default function MyForm() {
 			},
 			method : 'post',
 			body   : JSON.stringify( {
-				name,sex,grade
+				name,gender,grade
 			} )
 		};
 		
@@ -47,7 +47,7 @@ export default function MyForm() {
 		<>
 			<div>
 				name : { name }
-				sex : { sex }
+				gender : { gender }
 				grade : { grade }
 			</div>
 			<div>
@@ -69,17 +69,17 @@ export default function MyForm() {
 						<span>*</span>
 					</div>
 					<div className={ 'd-inline-block' }>
-						<Form.Check inline required onChange={ onChangeSex }
+						<Form.Check inline required onChange={ onChangeGender }
 						            label="남"
 						            value={ 'male' }
-						            name={ sex }
+						            name={ gender }
 						            type={ 'radio' }
 						            id={ `inline-radio-1` }
 						/>
-						<Form.Check inline required onChange={ onChangeSex }
+						<Form.Check inline required onChange={ onChangeGender }
 						            label="여"
 						            value={ 'female' }
-						            name={ sex }
+						            name={ gender }
 						            type={ 'radio' }
 						            id={ `inline-radio-2` }
 						/>
