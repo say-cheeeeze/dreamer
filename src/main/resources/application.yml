@@ -1,7 +1,14 @@
 spring:
+  profiles:
+    active: local
+
+---
+server:
+  port: 8080
+spring:
   config:
     activate:
-      on-profile: dev
+      on-profile: local
   web:
     resources:
       add-mappings: true
@@ -22,7 +29,7 @@ spring:
     database: mysql
     database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
-      ddl-auto: create # create-drop, update, none, validate
+      ddl-auto: update # create-drop, update, none, validate
     properties:
       hibernate:
         highlight_sql: true
@@ -32,8 +39,6 @@ spring:
         generate_statistics: false
     generate-ddl: true
     open-in-view: false
-server:
-  port: 8080
 
 logging:
   level:

@@ -1,13 +1,18 @@
 package com.cheeeeze.bootjpa1.web.remnant.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.cheeeeze.bootjpa1.web.remnant.vo.RemnantCnd;
 import com.cheeeeze.bootjpa1.web.remnant.vo.RemnantInfo;
+import com.querydsl.jpa.impl.JPAQuery;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class RemnantService {
 	
 	private final RemnantInfoRepository repository;
+	private final RemnantQDSLRepository qdslRepository;
 	
 	public RemnantInfo saveRemnant( RemnantInfo info ) {
 		return repository.save( info );
@@ -45,10 +51,21 @@ public class RemnantService {
 		repository.deleteById( id );
 	}
 	
-	public List<RemnantInfo> getRemnantListByName( RemnantCnd cnd ) {
-		Page<RemnantInfo> pageInfo = repository.findByName( cnd.getName(), PageRequest.of( cnd.getPage(), cnd.getSize(), Sort.Direction.DESC, "inputDate" ) );
-		List<RemnantInfo> content = pageInfo.getContent();
-		return content;
+	public Map<String, Object> getRemnantPageListByCnd( RemnantCnd cnd ) {
+		
+		List<RemnantInfo> rtList = qdslRepository.getPageList( cnd );
+		Long totalCount = qdslRepository.getJpaQueryInfo( cnd );
+		
+		Page<RemnantInfo> page = new PageImpl<>( rtList, cnd.getPageable(), totalCount );
+		Map<String, Object> map = new HashMap<>();
+		map.put( "list", rtList );
+		map.put( "isLast", page.isLast() );
+		map.put( "isFirst", page.isFirst() );
+		map.put( "hasNext", page.hasNext() );
+		map.put( "hasPrevious", page.hasPrevious() );
+		map.put( "pageSize", page.getSize() );
+		map.put( "totalCount", totalCount );
+		return map;
 	}
 	
 }

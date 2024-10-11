@@ -9,3 +9,8 @@
 .min-width-5rem {
     min-width: 5rem;
 }
+
+.mb-1rem { margin-bottom:1rem;}
+.mb-2rem { margin-bottom:2rem;}
+
+.ml-05vw { margin-left: 0.5vw;}

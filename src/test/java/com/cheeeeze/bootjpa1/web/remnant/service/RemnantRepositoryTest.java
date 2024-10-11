@@ -2,6 +2,7 @@ package com.cheeeeze.bootjpa1.web.remnant.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.LongSupplier;
 
@@ -34,12 +35,6 @@ class RemnantRepositoryTest {
 	
 	@Autowired
 	private RemnantService remnantService;
-	
-	@Autowired
-	private EntityManager em;
-	
-	@Autowired
-	private RemnantQDSLRepostiory remnantQDSLRepostiory;
 	
 	@Autowired
 	private JPAQueryFactory jpaQueryFactory;
@@ -261,6 +256,24 @@ class RemnantRepositoryTest {
 		System.out.println( "isFirst = " + isFirst );
 		boolean isLast = page.isLast();
 		System.out.println( "isLast = " + isLast );
+	}
+	
+	@Test
+	void pageListSearch2() {
+		
+		RemnantCnd cnd = new RemnantCnd();
+//		cnd.setPage( 1 ); // 실제 1 page => offset : 0
+		cnd.setPage( 2 ); // page : 2 offset : (2-1) * pageSize
+		cnd.setName( "mem" );
+		cnd.setGrade( "5" );
+//		cnd.setPage( 41 );
+		Map<String, Object> resultMap = remnantService.getRemnantPageListByCnd( cnd );
+		System.out.println( "totalCount : " + resultMap.get( "totalCount" ) );
+		System.out.println( "isFirst : " + resultMap.get( "isFirst" ) );
+		System.out.println( "isLast : " + resultMap.get( "isLast" ) );
+		System.out.println( "hasNext : " + resultMap.get( "hasNext" ) );
+		System.out.println( "hasPrevious : " + resultMap.get( "hasPrevious" ) );
+		
 	}
 	
 }

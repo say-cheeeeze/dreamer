@@ -18,13 +18,22 @@ public class RemnantCnd {
 	private String grade;
 	private Gender gender;
 	private LocalDateTime inputDate;
-	private int page = 0;
+	private int page = 1;
 	private int size = 10;
 	
 	public RemnantCnd() {
 	}
 	
+	// mysql paging offset parameter
+	public int getOffset() {
+		int offset = 0;
+		if ( this.page > 1 ) {
+			offset = ( this.page - 1 ) * this.size;
+		}
+		return offset;
+	}
+	
 	public Pageable getPageable() {
-		return PageRequest.of(this.page, this.size, Sort.by("inputDate").descending());
+		return PageRequest.of( this.page - 1, this.size, Sort.by("inputDate").descending());
 	}
 }
