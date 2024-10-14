@@ -6,15 +6,14 @@ import java.util.Map;
 
 import com.cheeeeze.bootjpa1.web.remnant.vo.RemnantCnd;
 import com.cheeeeze.bootjpa1.web.remnant.vo.RemnantInfo;
-import com.querydsl.jpa.impl.JPAQuery;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 @Service
 @Transactional
@@ -25,10 +24,32 @@ public class RemnantService {
 	private final RemnantQDSLRepository qdslRepository;
 	
 	public RemnantInfo saveRemnant( RemnantInfo info ) {
+		
+		if ( !StringUtils.hasText( info.getName() ) ||
+			 !StringUtils.hasText( info.getGrade() ) ||
+			 null == info.getGender() ) {
+			
+			throw new RuntimeException( "필수값 누락" );
+		}
+		
+		if ( info.getId() != null ) {
+			RemnantInfo remnantInfoById = getRemnantInfoById( info.getId() );
+			remnantInfoById.updateRemnantInfo( info.getName(), info.getGrade(), info.getGender() );
+			return repository.save( remnantInfoById );
+		}
+		
 		return repository.save( info );
 	}
 	
+	public RemnantInfo getRemnantInfoById( Long id ) {
+		return repository.findById( id ).orElse( null );
+	}
+	
 	public RemnantInfo getRemnantInfo( RemnantCnd cnd ) {
+		
+		if ( null == cnd.getId() ) {
+			throw new RuntimeException( "필수값 누락" );
+		}
 		return repository.findById( cnd.getId() ).orElse( null );
 	}
 	

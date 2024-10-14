@@ -8,7 +8,7 @@ public enum Gender {
 	
 	private final String gender;
 	
-	Gender(String gender) {
+	Gender( String gender ) {
 		this.gender = gender;
 	}
 	
@@ -16,4 +16,6 @@ public enum Gender {
 	public String getGender() {
 		return gender;
 	}
+	
 }
+

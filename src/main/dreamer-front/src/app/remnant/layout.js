@@ -2,12 +2,13 @@ import DreamerNav from "@/app/components/nav";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import { Suspense } from "react";
 
 export default function RemnantLayout({children}){
 	return (
 		
 		<>
-			<Container fluid>
+			<Container fluid className={ 'min-height-100vh'}>
 				<Row>
 					<Col>
 						<div>
@@ -22,12 +23,14 @@ export default function RemnantLayout({children}){
 				</Row>
 				<Row>
 					<Col>
-						{ children }
+						<Suspense>
+							{ children }
+						</Suspense>
 					</Col>
 				</Row>
 			</Container>
-			<div style={{height:"15vw", textAlign:"center"}}>
-				<div style={{height:"100%", alignContent:"center"}}>Footer</div>
+			<div className={"footer-wrapper"}>
+				<div className={"footer-div1"}>Footer</div>
 			</div>
 		</>
 	)

@@ -27,7 +27,7 @@ const nextConfig = {
     },
     
     env : {
-        local3000 : 'http://localhost:3000'
+        // local3000 : 'http://localhost:3000' not use ...
     }
 };
 

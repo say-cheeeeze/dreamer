@@ -10,11 +10,6 @@ import LoadingSpinTD from "@/app/components/LoadingSpinTD";
 import { usePathname, useRouter, useSearchParams, } from "next/navigation";
 import { Form } from "react-bootstrap";
 
-let domain = process.env.local3000;
-let alignCenter = {
-	textAlign : "center"
-}
-
 export default function Home() {
 	
 	const router = useRouter();
@@ -33,7 +28,7 @@ export default function Home() {
 	const [ searchText, setSearchText ] = useState( '' );
 	const [ searchFlag, setSearchFlag ] = useState( true );
 	
-	const searchInputRef = useRef(null );
+	const searchInputRef = useRef( null );
 	
 	// init 1 page if queryParam is null
 	useEffect( () => {
@@ -41,7 +36,7 @@ export default function Home() {
 		if ( null === page ) {
 			pageHandler( 1 );
 		}
-	}, []);
+	}, [] );
 	
 	useEffect( () => {
 		
@@ -70,16 +65,16 @@ export default function Home() {
 	
 	function getRemnantList( page ) {
 		
-		const url = domain + '/api/remnant/list';
+		const url = '/api/remnant/list';
 		const requestObj = {
 			method  : 'POST',
 			headers : {
 				"Content-Type" : "application/json",
 			},
 			body    : JSON.stringify( {
-				page : page,
-				size : pageSize,
-				name : searchText,
+				page  : page,
+				size  : pageSize,
+				name  : searchText,
 				grade : searchText
 				
 			} )
@@ -96,13 +91,11 @@ export default function Home() {
 				
 				// 마지막 페이지네이션 번호 계산
 				setTotalPage( Math.ceil( data.listInfo.totalCount / pageSize ) );
-				setLoading( false );
 			} );
 			
 		} ).catch( e => {
 			console.error( e );
-			setLoading( false );
-		} );
+		} ).finally( () => setLoading( false ) );
 	}
 	
 	function pageHandler( clickPage ) {
@@ -114,7 +107,7 @@ export default function Home() {
 		
 		router.replace(
 			`${ pathname }?${ newParams.toString() }`,
-			{ shallow:true}
+			{ shallow : true }
 		);
 		setCurPage( clickPage );  // 상태 업데이트
 	}
@@ -141,8 +134,9 @@ export default function Home() {
 		
 		setRtList( _list );
 	}
-	function onChangeSearchText( e ) {
-		setSearchText( e.target.value );
+	
+	function goRemnantViewPage( remId ) {
+		location.href = `/remnant/info?id=${remId}&mode=view`;
 	}
 	
 	function setRemnantDataRow() {
@@ -163,14 +157,27 @@ export default function Home() {
 		}
 		else {
 			
-			return rtList.map( ( post, idx ) => (
+			return rtList.map( ( rtInfo, idx ) => (
 				<tr key={ idx }>
-					<td style={ alignCenter }>{ post.id }</td>
-					<td style={ alignCenter }>{ post.name }</td>
-					<td style={ alignCenter }>{ post.gender }</td>
-					<td style={ alignCenter }>{ post.grade }</td>
-					<td style={ alignCenter }>{ post.inputDate }</td>
-					<td style={ alignCenter }>{ post.updateDate }</td>
+					<td>
+						<span>{ rtInfo.id }</span>
+					</td>
+					<td>
+						<span className="rt-name"
+						      onClick={ () => goRemnantViewPage( rtInfo.id ) }>{ rtInfo.name }</span>
+					</td>
+					<td>
+						<span>{ rtInfo.gender }</span>
+					</td>
+					<td>
+						<span>{ rtInfo.grade }</span>
+					</td>
+					<td>
+						<span>{ rtInfo.inputDate }</span>
+					</td>
+					<td>
+						<span>{ rtInfo.updateDate }</span>
+					</td>
 				</tr> ) );
 		}
 	}
@@ -178,7 +185,7 @@ export default function Home() {
 	return (
 		<>
 			<Container>
-				<div style={ { margin : "1rem 0 3rem" } }>
+				<div className={ 'container-header' }>
 					<h3>Remnant Home</h3>
 				</div>
 				<div className={ 'text-align-right mb-1rem' }>
@@ -188,21 +195,21 @@ export default function Home() {
 						<span>{ totalCount }</span>
 						<span>건</span>
 					</div>
-					<MyButton link="/remnant/regist"
-					          color="primary"
-					          text="신규"
+					<MyButton link="/remnant/info?mode=insert"
+					          color="outline-primary"
+					          text="신규 등록"
 					/>
 				</div>
 				<div>
-					<Table bordered>
+					<Table bordered className={ "tb-rt" }>
 						<thead>
 						<tr>
-							<th style={ alignCenter }>No.</th>
-							<th style={ alignCenter }>이름</th>
-							<th style={ alignCenter }>성별</th>
-							<th style={ alignCenter }>학년</th>
-							<th style={ alignCenter }>등록일</th>
-							<th style={ alignCenter }>수정일</th>
+							<th>등록번호</th>
+							<th>이름</th>
+							<th>성별</th>
+							<th>학년</th>
+							<th>등록일</th>
+							<th>수정일</th>
 						</tr>
 						</thead>
 						<tbody>
@@ -227,11 +234,16 @@ export default function Home() {
 					              onKeyDown={ onKeyDownSearchForm }
 					              style={ { width : "30vw", display : "inline-block" } }
 					/>
-					<Button className={ "ml-05vw "}
-					        variant={ "dark" }
+					<Button className={ "ml-05vw " }
+					        variant="outline-primary"
 					        onClick={ onClickSearchBtn }>
 						검색
 					</Button>
+				</div>
+				<div className={ "text-align-center" }>
+					<Form.Text muted>
+						이름 또는 학년 검색
+					</Form.Text>
 				</div>
 			</Container>
 		</>

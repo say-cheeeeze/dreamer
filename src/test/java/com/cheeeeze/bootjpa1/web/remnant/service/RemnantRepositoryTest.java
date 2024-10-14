@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.LongSupplier;
 
 import com.cheeeeze.bootjpa1.web.remnant.vo.QRemnantInfo;
 import com.cheeeeze.bootjpa1.web.remnant.vo.RemnantCnd;
@@ -12,19 +11,15 @@ import com.cheeeeze.bootjpa1.web.remnant.vo.RemnantInfo;
 import com.cheeeeze.bootjpa1.web.util.Gender;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import jakarta.persistence.EntityManager;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.test.context.ActiveProfiles;
-
-import static com.cheeeeze.bootjpa1.web.remnant.vo.QRemnantInfo.remnantInfo;
 
 @SpringBootTest
 @ActiveProfiles( "test" )
@@ -147,7 +142,7 @@ class RemnantRepositoryTest {
 	
 	@Test
 	public void deleteById_TEST() {
-		long id = 19L;
+		long id = 409L;
 		remnantRepository.deleteById( id );
 		
 		Optional<RemnantInfo> byId = remnantRepository.findById( id );
@@ -273,6 +268,17 @@ class RemnantRepositoryTest {
 		System.out.println( "isLast : " + resultMap.get( "isLast" ) );
 		System.out.println( "hasNext : " + resultMap.get( "hasNext" ) );
 		System.out.println( "hasPrevious : " + resultMap.get( "hasPrevious" ) );
+		
+	}
+	
+	@Test
+	void saveServiceTest() {
+		RemnantInfo remInfo = RemnantInfo.builder()
+										 .gender( Gender.MALE )
+										 .name( "최종등록한다잉" )
+										 .grade( "6" ).build();
+		RemnantInfo remnantInfo = remnantService.saveRemnant( remInfo );
+		System.out.println( "remnantInfo = " + remnantInfo );
 		
 	}
 	
