@@ -22,6 +22,10 @@ const nextConfig = {
             {
                 source : '/api/:path*',
                 destination : 'http://localhost:8080/api/:path*'
+            },
+            {
+                source      : '/images/:path*', // image 저장 uri 를 spring 에서 활용하기 위해.
+                destination : 'http://localhost:8080/images/:path*'
             }
         ]
     },

@@ -3,6 +3,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { Suspense } from "react";
+import LoadingSpinner from "@/app/components/LoadingSpinner";
 
 export default function RemnantLayout({children}){
 	return (
@@ -23,7 +24,7 @@ export default function RemnantLayout({children}){
 				</Row>
 				<Row>
 					<Col>
-						<Suspense>
+						<Suspense fallback={<LoadingSpinner/>}>
 							{ children }
 						</Suspense>
 					</Col>

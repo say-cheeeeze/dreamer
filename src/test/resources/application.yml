@@ -37,5 +37,9 @@ server:
 
 logging:
   level:
-    com.zaxxer.hikari.pool.HikariPool: debug
-    org.hibernate.orm.jdbc.bind: trace
+    com.zaxxer.hikari.pool.HikariPool: warn
+    org.hibernate.orm.jdbc.bind: trace #trace
+    org.apache.coyote.http11: warn # http 전송 데이터 모두 보여줌(debug)
+
+
+file.dir: /Users/cheeeeze/springfiledir/ # @Value( ${file.dir} ) 로 사용가능

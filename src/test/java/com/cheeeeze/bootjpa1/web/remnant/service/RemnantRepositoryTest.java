@@ -2,12 +2,14 @@ package com.cheeeeze.bootjpa1.web.remnant.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
-import com.cheeeeze.bootjpa1.web.remnant.vo.QRemnantInfo;
-import com.cheeeeze.bootjpa1.web.remnant.vo.RemnantCnd;
-import com.cheeeeze.bootjpa1.web.remnant.vo.RemnantInfo;
+import com.cheeeeze.bootjpa1.web.remnant.domain.QRemnantInfo;
+import com.cheeeeze.bootjpa1.web.remnant.domain.RemnantCnd;
+import com.cheeeeze.bootjpa1.web.remnant.domain.RemnantDTO;
+import com.cheeeeze.bootjpa1.web.remnant.domain.RemnantInfo;
+import com.cheeeeze.bootjpa1.web.rtimage.domain.ImageInfo;
+import com.cheeeeze.bootjpa1.web.rtimage.service.ImageInfoRepository;
 import com.cheeeeze.bootjpa1.web.util.Gender;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -25,24 +27,24 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles( "test" )
 class RemnantRepositoryTest {
 	
+	private final QRemnantInfo qRemnantInfo = QRemnantInfo.remnantInfo;
+	
 	@Autowired
 	private RemnantInfoRepository remnantRepository;
 	
 	@Autowired
-	private RemnantService remnantService;
-	
-	@Autowired
 	private JPAQueryFactory jpaQueryFactory;
 	
-	private final QRemnantInfo qRemnantInfo = QRemnantInfo.remnantInfo;
+	@Autowired
+	private ImageInfoRepository imageRepository;
 	
 	
 	@Test
 	public void saveRemnantTest() {
 		
-		for ( int i = 0; i < 400; i++ ) {
+		for ( int i = 0; i < 150; i++ ) {
 			
-			Gender gender = null;
+			Gender gender;
 			if ( i % 2 == 0 ) {
 				gender = Gender.MALE;
 			}
@@ -50,10 +52,11 @@ class RemnantRepositoryTest {
 				gender = Gender.FEMALE;
 			}
 			
-			RemnantInfo remInfo = RemnantInfo.builder()
-											 .gender( gender )
-											 .name( "member" + i )
-											 .grade( "6" ).build();
+			RemnantDTO remDto = new RemnantDTO();
+			remDto.setGender(gender);
+			remDto.setName( "member" + i );
+			remDto.setGrade( "6" );
+			RemnantInfo remInfo = remDto.toRemnantEntity();
 			
 			RemnantInfo save = remnantRepository.save( remInfo );
 			System.out.println( "save = " + save.getId() );
@@ -61,15 +64,6 @@ class RemnantRepositoryTest {
 		
 	}
 	
-	@Test
-	public void saveRemnantServiceTest() {
-		RemnantInfo remInfo = RemnantInfo.builder()
-										 .gender( Gender.MALE )
-										 .name( "남윤재" )
-										 .grade( "5" ).build();
-		RemnantInfo saveInfo = remnantService.saveRemnant( remInfo );
-		System.out.println( saveInfo );
-	}
 	
 	@Test
 	public void getRemnantInfoById_TEST() {
@@ -81,14 +75,7 @@ class RemnantRepositoryTest {
 			System.out.println( "remnantInfo.getName() = " + remnantInfo.getName() );
 		}
 	}
-	@Test
-	public void getRemnantInfoTEST() {
-		RemnantCnd cnd = new RemnantCnd();
-		cnd.setId( 815L );
-		
-		RemnantInfo getInfo = remnantService.getRemnantInfo( cnd );
-		System.out.println( "getInfo = " + getInfo );
-	}
+
 	
 	@Test
 	public void getRemnantListAll_TEST() {
@@ -97,32 +84,7 @@ class RemnantRepositoryTest {
 		System.out.println( rtListAll.size() );
 	}
 	
-	@Test
-	void getRemnantListAll_serviceTEST() {
-		List<RemnantInfo> remnantListAll = remnantService.getRemnantListAll();
-		System.out.println( "remnantListAll = " + remnantListAll );
-	}
 	
-	@Test
-	void getRtPageList_TEST() {
-		Page<RemnantInfo> pageList = remnantService.getRemnantPageList( 0, 10 );
-		
-		System.out.println( "pageList = " + pageList );
-		for ( RemnantInfo remnantInfo : pageList ) {
-			System.out.println( remnantInfo );
-		}
-		
-		System.out.println( pageList.hasNext() ); // 다음 페이지 있냐
-		System.out.println( pageList.hasPrevious() ); // 이전페이지 있냐
-		System.out.println( pageList.getTotalPages() ); // 총 몇 페이지냐
-		System.out.println( pageList.getTotalElements() ); // 총 몇 개있냐
-		System.out.println( pageList.getNumber() ); // 현재 page number 뭐임
-		System.out.println( pageList.isFirst() ); // 맨 처음 페이지냐
-		System.out.println( pageList.isLast() ); // 맨 마지막 페이지냐
-		
-		// page 클래스는 getContent() 로 List 로 변환할 수 있다.
-		List<RemnantInfo> content = pageList.getContent();
-	}
 	
 	@Test
 	public void existById_TEST() {
@@ -149,16 +111,6 @@ class RemnantRepositoryTest {
 		Assertions.assertThat( byId ).isEmpty();
 	}
 	
-	@Test
-	void deleteById_ServiceTest() {
-		long id = 19L;
-		remnantService.deleteRemnantById( id );
-		
-		RemnantCnd cnd = new RemnantCnd();
-		cnd.setId( 19L );
-		RemnantInfo mustNullInfo = remnantService.getRemnantInfo( cnd );
-		Assertions.assertThat( mustNullInfo ).isNull();
-	}
 	
 	@Test
 	public void gender_TEST() {
@@ -182,21 +134,10 @@ class RemnantRepositoryTest {
 		}
 	}
 	
-	@Test
-	void Test1() {
-		System.out.println( Gender.valueOf( "MALE" ) );
-		RemnantCnd remnantCnd = new RemnantCnd();
-		remnantCnd.setId(80L);
-		RemnantInfo findInfo = remnantService.getRemnantInfo( remnantCnd );
-		System.out.println( findInfo );
-		
-		findInfo.updateRemnantInfo( findInfo.getName(), findInfo.getGrade(), Gender.MALE );
-		remnantRepository.save( findInfo );
-	}
 	
 	@Test
 	void pageListTEST() {
-		Page<RemnantInfo> pageInfo = remnantRepository.findByNameContaining( "5", PageRequest.of( 0, 10) );
+		Page<RemnantInfo> pageInfo = remnantRepository.findByNameContaining( "5", PageRequest.of( 0, 10 ) );
 		
 		pageInfo.getContent().forEach( System.out::println );
 	}
@@ -220,18 +161,18 @@ class RemnantRepositoryTest {
 		cnd.setPage( 1 );
 		
 		List<RemnantInfo> mainList = jpaQueryFactory
-											  .selectFrom( qRemnantInfo )
-											  .where(
-														  qRemnantInfo.name.contains( cnd.getName() )
-											  )
-											  .orderBy( qRemnantInfo.inputDate.desc() )
-											  .offset( cnd.getPage() )
-											  .limit( cnd.getSize() )
-											  .fetch();
+												 .selectFrom( qRemnantInfo )
+												 .where(
+															 qRemnantInfo.name.contains( cnd.getName() )
+												 )
+												 .orderBy( qRemnantInfo.inputDate.desc() )
+												 .offset( cnd.getPage() )
+												 .limit( cnd.getSize() )
+												 .fetch();
 		
 		JPAQuery<Long> resultLong = jpaQueryFactory.select( qRemnantInfo.count() )
-											  .from( qRemnantInfo )
-											  .where( qRemnantInfo.name.contains( cnd.getName() ) );
+												   .from( qRemnantInfo )
+												   .where( qRemnantInfo.name.contains( cnd.getName() ) );
 		
 		Page<RemnantInfo> page = PageableExecutionUtils.getPage( mainList, cnd.getPageable(), resultLong::fetchOne );
 		
@@ -253,33 +194,61 @@ class RemnantRepositoryTest {
 		System.out.println( "isLast = " + isLast );
 	}
 	
+	
+	
+	
 	@Test
-	void pageListSearch2() {
+	void checkDeleteImageWhenDeleteRemnant() {
 		
-		RemnantCnd cnd = new RemnantCnd();
-//		cnd.setPage( 1 ); // 실제 1 page => offset : 0
-		cnd.setPage( 2 ); // page : 2 offset : (2-1) * pageSize
-		cnd.setName( "mem" );
-		cnd.setGrade( "5" );
-//		cnd.setPage( 41 );
-		Map<String, Object> resultMap = remnantService.getRemnantPageListByCnd( cnd );
-		System.out.println( "totalCount : " + resultMap.get( "totalCount" ) );
-		System.out.println( "isFirst : " + resultMap.get( "isFirst" ) );
-		System.out.println( "isLast : " + resultMap.get( "isLast" ) );
-		System.out.println( "hasNext : " + resultMap.get( "hasNext" ) );
-		System.out.println( "hasPrevious : " + resultMap.get( "hasPrevious" ) );
+		RemnantInfo remnantInfo = remnantRepository.findById( 1L ).orElse( null );
+		ImageInfo imageInfo = remnantInfo.getImageInfo();
+		
+		RemnantInfo remnantInfo1 = imageInfo.getRemnantInfo();
+		
+		System.out.println( "remnantInfo1 == remnantInfo = " + (remnantInfo1 == remnantInfo) );
 		
 	}
 	
 	@Test
-	void saveServiceTest() {
-		RemnantInfo remInfo = RemnantInfo.builder()
-										 .gender( Gender.MALE )
-										 .name( "최종등록한다잉" )
-										 .grade( "6" ).build();
-		RemnantInfo remnantInfo = remnantService.saveRemnant( remInfo );
-		System.out.println( "remnantInfo = " + remnantInfo );
+	void orphanRemoval_TEST() {
 		
+		ImageInfo imageInfo = ImageInfo.builder().uploadFileName( "fileName" ).build();
+		ImageInfo saveImage = imageRepository.save( imageInfo );
+		
+		RemnantInfo remnantInfo = RemnantInfo.builder().name( "test" ).grade( "1" ).gender( Gender.MALE ).build();
+		remnantInfo.setImageInfo( saveImage );
+		
+		RemnantInfo saveRemnant = remnantRepository.save( remnantInfo );
+		System.out.println( "saveRemnant = " + saveRemnant );
+		
+		// remnant 를 지웠을 때
+		remnantRepository.deleteById( saveRemnant.getId() );
+		// 이 때 image 도 지워진다.
+		
+		// 이미지도 없다.
+		Assertions.assertThat( imageRepository.findById( saveRemnant.getId() ).orElse( null ) ).isNull();
+		
+	}
+	
+	@Test
+	void orphanRemoval_TEST2() {
+		
+		ImageInfo imageInfo = ImageInfo.builder().uploadFileName( "fileName" ).build();
+		ImageInfo saveImage = imageRepository.save( imageInfo );
+		
+		RemnantInfo remnantInfo = RemnantInfo.builder().name( "test" ).grade( "1" ).gender( Gender.MALE ).build();
+		remnantInfo.setImageInfo( saveImage );
+		
+		RemnantInfo saveRemnant = remnantRepository.save( remnantInfo );
+		System.out.println( "saveRemnant = " + saveRemnant );
+		
+		// 렘넌트에게서 해당 이미지값을 해제하면 image 도 삭제된다.
+		RemnantInfo rtFindInfo = remnantRepository.findById( saveRemnant.getId() ).orElse( null );
+		rtFindInfo.setImageInfo( null );
+		
+		remnantRepository.save( rtFindInfo );
+		
+		Assertions.assertThat( imageRepository.findById( saveImage.getId() ).orElse( null ) ).isNull();
 	}
 	
 }

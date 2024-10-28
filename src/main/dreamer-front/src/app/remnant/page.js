@@ -9,6 +9,7 @@ import MyPagination from "@/app/components/pagination";
 import LoadingSpinTD from "@/app/components/LoadingSpinTD";
 import { usePathname, useRouter, useSearchParams, } from "next/navigation";
 import { Form } from "react-bootstrap";
+import axios from "axios";
 
 export default function Home() {
 	
@@ -66,36 +67,30 @@ export default function Home() {
 	function getRemnantList( page ) {
 		
 		const url = '/api/remnant/list';
-		const requestObj = {
-			method  : 'POST',
-			headers : {
-				"Content-Type" : "application/json",
-			},
-			body    : JSON.stringify( {
-				page  : page,
-				size  : pageSize,
-				name  : searchText,
-				grade : searchText
-				
-			} )
-		}
 		
-		fetch( url, requestObj ).then( ( response ) => {
+		let param = {
+			page  : page,
+			size  : pageSize,
+			name  : searchText,
+			grade : searchText
+		}
+		axios.post( url, param ).then( res => {
 			
-			response.json().then( data => {
-				
-				setIsFirst( data.listInfo.isFirst );
-				setIsLast( data.listInfo.isLast );
-				setTotalCount( data.listInfo.totalCount );
-				reformRtList( data.listInfo.list );
-				
-				// 마지막 페이지네이션 번호 계산
-				setTotalPage( Math.ceil( data.listInfo.totalCount / pageSize ) );
-			} );
+			setIsFirst( res.data.listInfo.isFirst );
+			setIsLast( res.data.listInfo.isLast );
+			setTotalCount( res.data.listInfo.totalCount );
+			reformRtList( res.data.listInfo.list );
+			
+			// 마지막 페이지네이션 번호 계산
+			setTotalPage( Math.ceil( res.data.listInfo.totalCount / pageSize ) );
 			
 		} ).catch( e => {
+			alert( "오류가 발생했습니다." );
 			console.error( e );
-		} ).finally( () => setLoading( false ) );
+			
+		} ).finally( () => {
+			setLoading( false );
+		} );
 	}
 	
 	function pageHandler( clickPage ) {
@@ -136,7 +131,7 @@ export default function Home() {
 	}
 	
 	function goRemnantViewPage( remId ) {
-		location.href = `/remnant/info?id=${remId}&mode=view`;
+		location.href = `/remnant/info?id=${ remId }&mode=view`;
 	}
 	
 	function setRemnantDataRow() {
@@ -204,12 +199,12 @@ export default function Home() {
 					<Table bordered className={ "tb-rt" }>
 						<thead>
 						<tr>
-							<th>등록번호</th>
-							<th>이름</th>
-							<th>성별</th>
-							<th>학년</th>
-							<th>등록일</th>
-							<th>수정일</th>
+							<th width={"15%"}>등록번호</th>
+							<th width={"30%"}>이름</th>
+							<th width={ "10%" }>성별</th>
+							<th width={ "10%" }>학년</th>
+							<th width={ "15%" }>등록일</th>
+							<th width={ "15%" }>수정일</th>
 						</tr>
 						</thead>
 						<tbody>

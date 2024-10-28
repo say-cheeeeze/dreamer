@@ -1,4 +1,4 @@
-package com.cheeeeze.bootjpa1.web.remnant.vo;
+package com.cheeeeze.bootjpa1.web.remnant.domain;
 
 import java.time.LocalDateTime;
 

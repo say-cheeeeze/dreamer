@@ -1,21 +1,18 @@
 package com.cheeeeze.bootjpa1.web.remnant.service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Supplier;
 
-import com.cheeeeze.bootjpa1.web.remnant.vo.RemnantCnd;
-import com.cheeeeze.bootjpa1.web.remnant.vo.RemnantInfo;
+import com.cheeeeze.bootjpa1.web.remnant.domain.RemnantCnd;
+import com.cheeeeze.bootjpa1.web.remnant.domain.RemnantDTO;
+import com.cheeeeze.bootjpa1.web.remnant.domain.RemnantInfo;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.StringUtils;
 
-import static com.cheeeeze.bootjpa1.web.remnant.vo.QRemnantInfo.remnantInfo;
+import static com.cheeeeze.bootjpa1.web.remnant.domain.QRemnantInfo.remnantInfo;
 
 /**
  * @methodName   : QueryDSL 을 활용하는 Repository
@@ -29,7 +26,7 @@ public class RemnantQDSLRepository {
 	
 	private final JPAQueryFactory queryFactory;
 	
-	public List<RemnantInfo> getPageList( RemnantCnd cnd ) {
+	public List<RemnantDTO> getPageList( RemnantCnd cnd ) {
 		
 		List<RemnantInfo> rtList = queryFactory
 											   .selectFrom( remnantInfo )
@@ -42,7 +39,9 @@ public class RemnantQDSLRepository {
 											   .limit( cnd.getSize() )
 											   .fetch();
 		
-		return rtList;
+		List<RemnantDTO> list = rtList.stream().map( RemnantInfo::toRemnantDTO ).toList();
+		
+		return list;
 	}
 	
 	public Long getJpaQueryInfo( RemnantCnd cnd ) {

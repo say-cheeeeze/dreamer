@@ -1,9 +1,9 @@
-function isEmpty( str ) {
-	return null === str || undefined === str || '' === str || 'null' === str || [] === str || str.length === 0;
+function isEmpty( param ) {
+	return null === param || undefined === param || '' === param || 'null' === param || [] === param || param.length === 0;
 }
 
-function isNotEmpty( str ) {
-	return !isEmpty( str );
+function isNotEmpty( param ) {
+	return !isEmpty( param );
 }
 
 const CommonJs = {

@@ -1,6 +1,6 @@
 package com.cheeeeze.bootjpa1.web.remnant.service;
 
-import com.cheeeeze.bootjpa1.web.remnant.vo.RemnantInfo;
+import com.cheeeeze.bootjpa1.web.remnant.domain.RemnantInfo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

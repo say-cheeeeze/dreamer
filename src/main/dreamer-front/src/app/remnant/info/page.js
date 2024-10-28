@@ -2,13 +2,11 @@
 import Container from "react-bootstrap/Container";
 import MyButton from "@/app/components/MyButton";
 import RemnantForm from "@/app/remnant/info/remnantForm";
-import { useSearchParams } from "next/navigation";
+import { redirect, useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { Button, Card } from "react-bootstrap";
 import CommonJs from "@lib/common";
-import Image from 'react-bootstrap/Image';
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+import axios from "axios";
 
 export default function page() {
 	
@@ -21,45 +19,29 @@ export default function page() {
 	const isInsertMode = _mode === 'insert';
 	
 	function onClickDeleteBtn() {
-		console.log( _id );
 		if ( CommonJs.isEmpty( _id ) ) {
 			return;
 		}
-		
 		if ( !confirm( "정말 삭제하시겠습니까?" ) ) {
 			return;
 		}
-		
 		let url = '/api/remnant/delete';
-		let requestObj = {
-			headers : {
-				'content-Type' : 'application/json',
-			},
-			method  : 'post',
-			body    : JSON.stringify({ id : _id } )
-		};
-		
-		fetch( url, requestObj ).then( ( response ) => {
+		let param = {
+			id : _id
+		}
+		axios.post( url, param ).then( res => {
 			
-			response.json().then( data => {
-				
-				console.log( data );
-				
-				if ( 200 === data.status ) {
-					alert( "정상적으로 삭제하였습니다." );
-					router.push( '/remnant' );
-				}
-				else {
-					alert( "오류가 발생했습니다" );
-					location.reload();
-				}
-			} );
-			
+			if ( 200 === res.data.status ) {
+				// current page will not save session in history.
+				// so user can't navigate previous page with back button.
+				location.replace( '/remnant' );
+			}
 		} ).catch( e => {
-			alert( "오류가 발생했습니다" );
+			console.error( e );
+			alert( "오류가 발생했습니다." );
 			location.reload();
+		} ).finally( () => {
 		} );
-		
 	}
 	
 	return (
@@ -77,7 +59,7 @@ export default function page() {
 								<>
 									<div className={ "d-inline-block mr-5px" }>
 										<Button variant={ "outline-primary" }
-										        onClick={() => onClickDeleteBtn() }
+										        onClick={ () => onClickDeleteBtn() }
 										>삭제</Button>
 									</div>
 									<div className={ "d-inline-block mr-5px" }>
@@ -94,21 +76,7 @@ export default function page() {
 						</Button>
 					</div>
 				</div>
-				<div>
-					<RemnantForm mode={ _mode }/>
-					{
-						isViewMode &&
-						<>
-							<Container>
-								<Row>
-									<Col xs={ 6 } md={ 4 }>
-										<Image src="/user1.png" width={100} height={100} rounded/>
-									</Col>
-								</Row>
-							</Container>
-						</>
-					}
-				</div>
+				<RemnantForm mode={ _mode }/>
 			</Container>
 		</>
 	)

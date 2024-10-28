@@ -39,8 +39,22 @@ spring:
         generate_statistics: false
     generate-ddl: true
     open-in-view: false
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+      enabled: true # spring multipart 전송을 켜겠다.(default true, 이걸 false 로 하면 request.getPart 값없음)
 
 logging:
   level:
-    com.zaxxer.hikari.pool.HikariPool: debug
-    org.hibernate.orm.jdbc.bind: trace
+    com.zaxxer.hikari.pool.HikariPool: warn
+    org.hibernate.orm.jdbc.bind: warn #trace
+    org.apache.coyote.http11: warn # http 전송 데이터 모두 보여줌(debug)
+
+
+# @Value( ${keyname} ) 으로 사용가능
+image:
+  root_dir: /Users/cheeeeze/git/bootjpa1/src/main/resources/static/images/
+  build_dir: /Users/cheeeeze/git/bootjpa1/out/production/resources/static/images/
+
+

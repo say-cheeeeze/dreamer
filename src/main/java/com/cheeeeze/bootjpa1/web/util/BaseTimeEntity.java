@@ -22,21 +22,5 @@ import org.hibernate.annotations.processing.Pattern;
 @Getter
 @MappedSuperclass
 public abstract class BaseTimeEntity {
-	
-	@Column( name = "input_date", nullable = false )
-	private LocalDateTime inputDate;
-	
-	@Column( name = "update_date", nullable = false )
-	private LocalDateTime updateDate;
-	
-	@PrePersist
-	public void prePersist() {
-		this.inputDate = LocalDateTime.now();
-		this.updateDate = LocalDateTime.now();
-	}
 
-	@PreUpdate
-	public void preUpdate() {
-		this.updateDate = LocalDateTime.now();
-	}
 }
