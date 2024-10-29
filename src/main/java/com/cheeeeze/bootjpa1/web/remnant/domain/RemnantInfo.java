@@ -35,8 +35,9 @@ public class RemnantInfo {
 	@Column( name = "update_date" )
 	private LocalDateTime updateDate;
 	
-	// imageInfo 와 1:1 연관관계이고 remnantInfo 가 지워질때 -> image 도 지우겠다.
-	// orphanRemoval 고아객체 삭제 여부 -> 고아 이미지 객체가 생기면 그것도 지우겠다.
+	// imageInfo 와 1:1 연관관계이고
+	// cascade : 나, 즉 remnantInfo 가 지워질때 -> image 도 지우겠다. ( 부모가 삭제될 때 )
+	// orphanRemoval : 고아객체 삭제 여부 -> 고아 이미지 객체가 생기면 그것도 지우겠다.( 연관관계가 깨지는 것을 지우겠다. )
 	@OneToOne( cascade = CascadeType.REMOVE, orphanRemoval = true )
 	@JoinColumn( name = "IMAGE_ID" )
 	private ImageInfo imageInfo;

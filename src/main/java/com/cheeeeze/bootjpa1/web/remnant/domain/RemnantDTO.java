@@ -27,6 +27,7 @@ public class RemnantDTO {
 	
 	public RemnantInfo toRemnantEntity() {
 		RemnantInfo.RemnantInfoBuilder builder = RemnantInfo.builder();
+		builder.id( this.id );
 		builder.name( this.name );
 		builder.grade( this.grade );
 		builder.gender( this.gender );

@@ -3,6 +3,7 @@ import '@/app/css/teacher-regist.css';
 import { Button, Form } from "react-bootstrap";
 import { useState } from "react";
 import Link from "next/link";
+import axios from "axios";
 
 /**
  * 신규 교사 등록 화면
@@ -33,17 +34,32 @@ export default function TeacherRegist() {
 		event.preventDefault();
 		
 		if ( formValidation() ) {
-			console.log( "모든 valid 통과" );
-			// axios post insert teacher API
-			
-			console.log( formData );
-			
-			
+			saveTeacherData();
 		}
 		else {
 			alert( "필수 입력 항목(*)을 확인해주세요." );
 		}
 		
+	}
+	
+	function saveTeacherData() {
+		const URL_TEACHER_SAVE = '/api/teacher/save';
+		const teacherDTO = {
+			loginId  : formData.id,
+			name     : formData.name,
+			password : formData.pwd,
+			phone    : formData.phone,
+			email    : formData.email
+		}
+		
+		axios.post( URL_TEACHER_SAVE, teacherDTO ).then( res => {
+			console.log( res );
+		} ).catch( e => {
+			console.error( e );
+			alert( "오류가 발생했습니다" );
+			
+		} ).finally( () => {
+		} );
 	}
 	
 	const formValidation = () => {
@@ -54,7 +70,9 @@ export default function TeacherRegist() {
 		// 조건식에 쓰여져 객체로 평가될 때에는 true 로 간주된다!
 		
 		// 즉 모든 값들이 true 로 간주될 때 반환값이 true 가 된다.
-		return Object.values( formData.valid ).every( Boolean );
+		const val = Object.values( formData.valid ).every( Boolean );
+		console.log( val );
+		return val;
 	}
 	
 	const onChangeForm = ( e ) => {
@@ -97,6 +115,8 @@ export default function TeacherRegist() {
 			case 'pwdConfirm' :
 				return ( formData.pwd === value ) && ( formData.valid.pwd === true );
 			case 'phone' :
+				return true;
+			case 'email' :
 				return true;
 			default :
 				return false;

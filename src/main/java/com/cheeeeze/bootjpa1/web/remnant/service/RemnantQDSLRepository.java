@@ -15,10 +15,11 @@ import org.springframework.stereotype.Repository;
 import static com.cheeeeze.bootjpa1.web.remnant.domain.QRemnantInfo.remnantInfo;
 
 /**
- * @methodName   : QueryDSL 을 활용하는 Repository
+ * @description  :
+ * <pre>QueryDSL 을 활용하는 Repository,
+ * 다중 검색, 페이징처리를 같이 할 수 있다.</pre>
  * @author       : 남윤재
  * @date         : 2024-10-09
- * @description  : 
  */
 @Repository
 @RequiredArgsConstructor

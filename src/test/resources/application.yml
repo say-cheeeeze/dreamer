@@ -42,4 +42,7 @@ logging:
     org.apache.coyote.http11: warn # http 전송 데이터 모두 보여줌(debug)
 
 
-file.dir: /Users/cheeeeze/springfiledir/ # @Value( ${file.dir} ) 로 사용가능
+# @Value( ${keyname} ) 으로 사용가능
+image:
+  root_dir: /Users/cheeeeze/git/bootjpa1/src/main/resources/static/images/
+  build_dir: /Users/cheeeeze/git/bootjpa1/out/production/resources/static/images/
