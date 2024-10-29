@@ -1,0 +1,60 @@
+div.teacher-regist-form-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f0f0;
+}
+
+.bg-img {
+    background-image: url('/rt-bg.jpeg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-color: rgba(255, 255, 255, 0.6);
+}
+
+
+div.teacher-regist-form-wrapper div.form-wrapper {
+    width: 750px;
+    padding: 40px;
+    margin: 140px 0 140px;
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+div.teacher-regist-form-wrapper .header {
+    margin-bottom:20px;
+    color:#333;
+}
+
+div.teacher-regist-form-wrapper form {
+    display: flex;
+    flex-direction: column;
+}
+
+div.teacher-regist-form-wrapper .input-container {
+    margin-bottom:15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+div.teacher-regist-form-wrapper div.left-container {
+    flex:3;
+    padding-right:15px;
+    text-align: right;
+}
+div.teacher-regist-form-wrapper div.right-container { flex:7; }
+
+div.teacher-regist-form-wrapper .form-label {
+    color:#555;
+}
+div.teacher-regist-form-wrapper input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-size: 1rem;
+}

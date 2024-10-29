@@ -183,7 +183,7 @@ export default function Home() {
 				<div className={ 'container-header' }>
 					<h3>Remnant Home</h3>
 				</div>
-				<div className={ 'text-align-right mb-1rem' }>
+				<div className={ 'text-align-right mb-1' }>
 					<div style={ { display : "inline-block", float : "left" } }>
 						<span>총 게시글</span>
 						<span style={ { margin : "0px 2px" } }>:</span>
@@ -229,7 +229,7 @@ export default function Home() {
 					              onKeyDown={ onKeyDownSearchForm }
 					              style={ { width : "30vw", display : "inline-block" } }
 					/>
-					<Button className={ "ml-05vw " }
+					<Button className={ "ml-1" }
 					        variant="outline-primary"
 					        onClick={ onClickSearchBtn }>
 						검색

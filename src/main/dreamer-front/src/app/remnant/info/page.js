@@ -57,12 +57,12 @@ export default function page() {
 							isViewMode &&
 							(
 								<>
-									<div className={ "d-inline-block mr-5px" }>
+									<div className={ "d-inline-block mr-1" }>
 										<Button variant={ "outline-primary" }
 										        onClick={ () => onClickDeleteBtn() }
 										>삭제</Button>
 									</div>
-									<div className={ "d-inline-block mr-5px" }>
+									<div className={ "d-inline-block mr-1" }>
 										<MyButton link={ '/remnant/info?id=' + _id + '&mode=update' }
 										          color="outline-primary"
 										          text="수정"

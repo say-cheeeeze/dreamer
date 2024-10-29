@@ -2,7 +2,7 @@
 import { Button, Form, Modal } from "react-bootstrap";
 import { useEffect, useRef, useState } from "react";
 import CommonJs from "@lib/common";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Image from "react-bootstrap/Image";
 import axios from "axios";
 
@@ -29,7 +29,6 @@ export default function RemnantForm( { mode } ) {
 	const isViewMode = mode === 'view';
 	const [ modalShow, setModalShow ] = useState( false );
 	const [ modalBodyTxt, setModalBodyTxt ] = useState( '' );
-	const pathname = usePathname(); // 현재 경로를 가져옴
 	const searchParams = useSearchParams(); // next/navigation의 useSearchParams 사용
 	const showModal = () => setModalShow( true );
 	const closeModal = () => setModalShow( false );
@@ -95,8 +94,7 @@ export default function RemnantForm( { mode } ) {
 	}
 	
 	function setImageThumbnail( imageDto ) {
-		console.log( imageDto );
-		if ( null === imageDto ) {
+		if ( null === imageDto || CommonJs.isEmpty( imageDto.fileFullPath ) ) {
 			return;
 		}
 		setImageUrl( '/images/' + imageDto.fileFullPath );
