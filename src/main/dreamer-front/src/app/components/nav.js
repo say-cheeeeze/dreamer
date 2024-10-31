@@ -7,20 +7,20 @@ export default function DreamerNav() {
 		<>
 			<div className={ "navi-wrapper-div" }>
 				<div>
-					<Link href="/">Home</Link>
+					<Link href="/" scroll={false}>Home</Link>
 				</div>
 				<div>
-					<Link href="/remnant">Remnant</Link>
+					<Link href="/remnant" scroll={false}>Remnant</Link>
 				</div>
 				<div>
-					<Link href="/teacher">Teacher</Link>
+					<Link href="/teacher" scroll={false}>Teacher</Link>
 				</div>
 				<div className={ "login-wrapper"}>
 					<div>
-						<Link href="/login">로그인</Link>
+						<Link href="/login" scroll={false}>로그인</Link>
 					</div>
 					<div className={ "ml-1"}>
-						<Link href="/logout">로그아웃</Link>
+						<Link href="/logout" scroll={false}>로그아웃</Link>
 					</div>
 				</div>
 			</div>

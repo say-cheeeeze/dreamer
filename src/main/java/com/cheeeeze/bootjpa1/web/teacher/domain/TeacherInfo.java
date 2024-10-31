@@ -17,14 +17,17 @@ public class TeacherInfo {
 	@Id
 	@GeneratedValue( strategy = GenerationType.IDENTITY )
 	private Long id;
+	@Column( nullable = false )
 	private String name;
+	@Column( nullable = false )
 	private String loginId;
+	@Column( nullable = false )
 	private String password;
 	private String email;
 	private String phone;
-	@Column( name = "input_date" )
+	@Column( name = "input_date", nullable = false )
 	private LocalDateTime inputDate;
-	@Column( name = "update_date" )
+	@Column( name = "update_date", nullable = false )
 	private LocalDateTime updateDate;
 	
 	@PrePersist

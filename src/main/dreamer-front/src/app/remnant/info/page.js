@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { Button, Card } from "react-bootstrap";
 import CommonJs from "@lib/common";
 import axios from "axios";
+import { StatusCode } from "http-status-codes";
 
 export default function page() {
 	
@@ -31,7 +32,7 @@ export default function page() {
 		}
 		axios.post( url, param ).then( res => {
 			
-			if ( 200 === res.data.status ) {
+			if ( res.data.status === StatusCode.OK ) {
 				// current page will not save session in history.
 				// so user can't navigate previous page with back button.
 				location.replace( '/remnant' );

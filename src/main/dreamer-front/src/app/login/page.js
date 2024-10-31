@@ -5,40 +5,72 @@ import { useState } from "react";
 import Link from "next/link";
 
 export default function Login() {
-	const [ validated, setValidated ] = useState( false );
 	
-	const handleSubmit = ( event ) => {
-		const form = event.currentTarget;
+	const [ user, setUser ] = useState( {
+		userId   : '',
+		password : ''
+	} )
+	
+	const submitLogin = ( event ) => {
 		
-		if ( !form.checkValidity() ) {
-			event.preventDefault();
-			event.stopPropagation();
+		event.preventDefault();
+		
+		console.log( user );
+		
+		// loginAPI
+		
+		
+		
+	}
+	
+	const onChangeInputEvent = ( e ) => {
+		const { name, value } = e.target;
+		
+		// id 는 영어,소문자만 입력가능
+		if ( name === 'userId' ) {
+			const regExp = /^[a-zA-Z0-9]*$/;
+			let regTest = regExp.test( value );
+			if ( false === regTest ) {
+				return;
+			}
 		}
-		setValidated( true );
-		
-		console.log( "폼 전송" );
-		
-		// event 막고 axios 하면 될것같다.
+		setUser({
+			...user,
+			[name] : value
+		});
 	}
 	
 	return <>
 		<div className={ 'login-form-wrapper bg-img' }>
 			<div className={ 'form-wrapper' }>
 				<h3 className={ 'header' }>로그인</h3>
-				<Form noValidate validated={ validated } onSubmit={ handleSubmit }>
+				<Form noValidate onSubmit={ submitLogin }>
 					<Form.Group className="input-container" controlId="id">
 						<Form.Label className={ "form-label" }>ID</Form.Label>
-						<Form.Control className={ 'form-control' } required type="text" placeholder=""/>
+						<Form.Control required
+						              className={ 'form-control' }
+						              type="text"
+						              name="userId"
+						              value={ user.userId }
+						              onChange={ onChangeInputEvent }
+						              placeholder=""/>
 					</Form.Group>
 					<Form.Group className="input-container" controlId="pwd">
-						<Form.Label>Password</Form.Label>
-						<Form.Control required type="password"/>
+						<Form.Label className={ 'form-label' }>Password</Form.Label>
+						<Form.Control required
+						              className={ 'form-control' }
+						              type="password"
+						              autoComplete={ 'off' }
+						              name='password'
+						              value={ user.password }
+						              onChange={ onChangeInputEvent }
+						/>
 					</Form.Group>
 					<Button type={ "submit" }>로그인</Button>
 				</Form>
-				<div className={'mt-3'}>
-					<Link href={ "/regist/teacher" }>교사등록</Link>
-					<Link className={'ml-1'} href={ "/" }>홈으로</Link>
+				<div className={ 'mt-3' }>
+					<Link href={ "/regist/teacher" } scroll={true }>교사등록</Link>
+					<Link className={ 'ml-1' } href={ "/" } scroll={ false }>홈으로</Link>
 				</div>
 			</div>
 		</div>

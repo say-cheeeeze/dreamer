@@ -5,6 +5,7 @@ import CommonJs from "@lib/common";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "react-bootstrap/Image";
 import axios from "axios";
+import { StatusCode } from "http-status-codes";
 
 export default function RemnantForm( { mode } ) {
 	
@@ -177,7 +178,7 @@ export default function RemnantForm( { mode } ) {
 			}
 		} ).then( res => {
 			
-			if ( 200 === res.data.status ) {
+			if ( res.data.status === StatusCode.OK ) {
 				router.replace( '/remnant/info?id=' + res.data.saveInfo.id + '&mode=view' );
 			}
 			else {

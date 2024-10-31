@@ -46,3 +46,8 @@ logging:
 image:
   root_dir: /Users/cheeeeze/git/bootjpa1/src/main/resources/static/images/
   build_dir: /Users/cheeeeze/git/bootjpa1/out/production/resources/static/images/
+
+service:
+    jwt:
+      token-source : iXd2DUjEFB9TEqP+Z0u4HjrllqviuHOGTd599eO2ILU=
+      expiration: 600000

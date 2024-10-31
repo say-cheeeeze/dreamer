@@ -24,15 +24,19 @@ public class RemnantInfo {
 	@Id
 	@GeneratedValue( strategy = GenerationType.IDENTITY )
 	private Long id;
+	@Column( nullable = false )
 	private String name;
+	@Column( nullable = false )
 	private String grade;
+	
 	@Enumerated(EnumType.STRING)
+	@Column( nullable = false )
 	private Gender gender;
 	
-	@Column( name = "input_date" )
+	@Column( name = "input_date", nullable = false )
 	private LocalDateTime inputDate;
 	
-	@Column( name = "update_date" )
+	@Column( name = "update_date", nullable = false )
 	private LocalDateTime updateDate;
 	
 	// imageInfo 와 1:1 연관관계이고

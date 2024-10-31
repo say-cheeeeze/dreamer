@@ -1,6 +1,7 @@
 package com.cheeeeze.bootjpa1.web.teacher.service;
 
-import com.cheeeeze.bootjpa1.web.remnant.domain.RemnantDTO;
+import java.util.Optional;
+
 import com.cheeeeze.bootjpa1.web.teacher.domain.TeacherDTO;
 import com.cheeeeze.bootjpa1.web.teacher.domain.TeacherInfo;
 import lombok.RequiredArgsConstructor;
@@ -30,5 +31,9 @@ public class TeacherService {
 		return !StringUtils.hasText( teacherDTO.getName() ) ||
 			   !StringUtils.hasText( teacherDTO.getLoginId() ) ||
 			   !StringUtils.hasText( teacherDTO.getPassword() );
+	}
+	
+	public Optional<TeacherInfo> findByLoginId( String loginId ) {
+		return teacherRepository.findByLoginId( loginId );
 	}
 }

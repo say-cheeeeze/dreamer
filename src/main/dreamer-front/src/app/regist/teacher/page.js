@@ -2,13 +2,17 @@
 import '@/app/css/teacher-regist.css';
 import { Button, Form } from "react-bootstrap";
 import { useState } from "react";
+import { redirect, useRouter } from "next/navigation";
 import Link from "next/link";
 import axios from "axios";
+import { StatusCode } from 'http-status-codes';
 
 /**
  * 신규 교사 등록 화면
  */
 export default function TeacherRegist() {
+	
+	const router = useRouter();
 	const LENGTH_ID = 6;
 	const LENGTH_NAME = 1;
 	const LENGTH_PASSWORD = 8;
@@ -29,20 +33,20 @@ export default function TeacherRegist() {
 		}
 	} )
 	
-	const handleSubmit = ( event ) => {
+	const onTeacherRegistration = ( event ) => {
 		
 		event.preventDefault();
 		
-		if ( formValidation() ) {
-			saveTeacherData();
-		}
-		else {
+		if ( !formValidation() ) {
 			alert( "필수 입력 항목(*)을 확인해주세요." );
+			return;
 		}
 		
+		requestSaveAPI();
 	}
 	
-	function saveTeacherData() {
+	function requestSaveAPI() {
+		
 		const URL_TEACHER_SAVE = '/api/teacher/save';
 		const teacherDTO = {
 			loginId  : formData.id,
@@ -53,7 +57,18 @@ export default function TeacherRegist() {
 		}
 		
 		axios.post( URL_TEACHER_SAVE, teacherDTO ).then( res => {
-			console.log( res );
+			
+			if ( res.data.status === StatusCode.OK ) {
+				localStorage.setItem( "authToken", res.data.token );
+				localStorage.setItem( "userId", res.data.teacherDto.loginId );
+				router.push( '/regist/welcome', { scroll : false } );
+			}
+			
+			// 중복ID
+			if ( res.data.status === StatusCode.CONFLICT ) {
+				alert( res.data.message );
+			}
+			
 		} ).catch( e => {
 			console.error( e );
 			alert( "오류가 발생했습니다" );
@@ -71,7 +86,6 @@ export default function TeacherRegist() {
 		
 		// 즉 모든 값들이 true 로 간주될 때 반환값이 true 가 된다.
 		const val = Object.values( formData.valid ).every( Boolean );
-		console.log( val );
 		return val;
 	}
 	
@@ -127,7 +141,11 @@ export default function TeacherRegist() {
 		<div className={ 'teacher-regist-form-wrapper bg-img' }>
 			<div className={ 'form-wrapper' }>
 				<h3 className={ 'header' }>교사 등록</h3>
-				<Form noValidate onSubmit={ handleSubmit }>
+				<div className={ 'mb-2 text-align-right'}>
+					<span className={ 'color-red'}>*</span>
+					<span>표시는 필수 항목입니다.</span>
+				</div>
+				<Form noValidate onSubmit={ onTeacherRegistration }>
 					<Form.Group className="input-container" controlId="name">
 						<div className={ "left-container" }>
 							<Form.Label className={ "form-label" }>
@@ -182,6 +200,7 @@ export default function TeacherRegist() {
 							              value={ formData.pwd }
 							              onChange={ onChangeForm }
 							              isValid={ formData.valid.pwd }
+							              autoComplete={ "off" }
 							/>
 							<div className={ "text-align-left" }>
 								<Form.Text muted>{ LENGTH_PASSWORD }자 이상</Form.Text>
@@ -203,6 +222,7 @@ export default function TeacherRegist() {
 							              value={ formData.pwdConfirm }
 							              onChange={ onChangeForm }
 							              isValid={ formData.valid.pwdConfirm }
+							              autoComplete={ "off" }
 							/>
 						</div>
 					</Form.Group>
@@ -244,7 +264,7 @@ export default function TeacherRegist() {
 					</div>
 				</Form>
 				<div className={ 'mt-3' }>
-					<Link href={ "/" }>홈으로</Link>
+					<Link href={ "/" } scroll={false}>홈으로</Link>
 				</div>
 			</div>
 		</div>
