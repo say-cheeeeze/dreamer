@@ -10,4 +10,6 @@ import org.springframework.stereotype.Repository;
 public interface TeacherInfoRepository extends JpaRepository<TeacherInfo, Long> {
 
 	Optional<TeacherInfo> findByLoginId( String userId );
+	
+	Optional<TeacherInfo> findByLoginIdAndPassword( String userId, String password );
 }

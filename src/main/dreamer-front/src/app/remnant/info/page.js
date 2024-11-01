@@ -1,13 +1,13 @@
 'use client'
+import '@/app/css/remnant.css';
 import Container from "react-bootstrap/Container";
 import MyButton from "@/app/components/MyButton";
 import RemnantForm from "@/app/remnant/info/remnantForm";
-import { redirect, useSearchParams } from "next/navigation";
-import { useRouter } from "next/navigation";
-import { Button, Card } from "react-bootstrap";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Button } from "react-bootstrap";
 import CommonJs from "@lib/common";
 import axios from "axios";
-import { StatusCode } from "http-status-codes";
+import { StatusCodes } from "http-status-codes";
 
 export default function page() {
 	
@@ -32,7 +32,7 @@ export default function page() {
 		}
 		axios.post( url, param ).then( res => {
 			
-			if ( res.data.status === StatusCode.OK ) {
+			if ( res.data.status === StatusCodes.OK ) {
 				// current page will not save session in history.
 				// so user can't navigate previous page with back button.
 				location.replace( '/remnant' );

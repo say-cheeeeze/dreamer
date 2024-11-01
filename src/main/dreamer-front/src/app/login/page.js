@@ -3,24 +3,54 @@ import '@/app/css/login.css';
 import { Button, Form } from "react-bootstrap";
 import { useState } from "react";
 import Link from "next/link";
+import CommonJs from "@lib/common";
+import axios from "axios";
+import { StatusCodes } from "http-status-codes";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
 	
 	const [ user, setUser ] = useState( {
 		userId   : '',
 		password : ''
-	} )
+	} );
+	const router = useRouter();
 	
 	const submitLogin = ( event ) => {
 		
 		event.preventDefault();
 		
-		console.log( user );
-		
 		// loginAPI
+		if ( CommonJs.isEmpty( user.userId ) ||
+			CommonJs.isEmpty( user.password ) ) {
+			return;
+		}
 		
+		console.log( "api 보내줭", user );
+		let param = {
+			loginId : user.userId,
+			password : user.password
+		}
 		
+		axios.post( '/api/teacher/login', param ).then( res => {
+			if ( res.data.status === StatusCodes.NOT_FOUND ) {
+				alert( "일치하는 회원이 없습니다" );
+				return;
+			}
+			
+			if ( res.data.status === StatusCodes.OK ) {
+				localStorage.setItem( "authToken", res.data.token );
+				localStorage.setItem( "userId", res.data.teacherDto.loginId );
+				router.push( '/', { scroll : false } );
+			}
+			
+		}).catch( e => {
+			console.error( e );
+			alert( "오류가 발생했습니다" );
+			
+		}).finally( () => {
 		
+		});
 	}
 	
 	const onChangeInputEvent = ( e ) => {

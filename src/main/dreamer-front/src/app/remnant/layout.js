@@ -24,9 +24,7 @@ export default function RemnantLayout({children}){
 				</Row>
 				<Row>
 					<Col>
-						<Suspense fallback={<LoadingSpinner/>}>
-							{ children }
-						</Suspense>
+						{ children }
 					</Col>
 				</Row>
 			</Container>

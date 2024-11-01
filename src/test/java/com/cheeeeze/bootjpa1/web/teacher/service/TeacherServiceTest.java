@@ -1,8 +1,10 @@
 package com.cheeeeze.bootjpa1.web.teacher.service;
 
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+import com.cheeeeze.bootjpa1.web.teacher.domain.TeacherCnd;
 import com.cheeeeze.bootjpa1.web.teacher.domain.TeacherDTO;
 import com.cheeeeze.bootjpa1.web.teacher.domain.TeacherInfo;
 import org.assertj.core.api.Assertions;
@@ -78,5 +80,14 @@ class TeacherServiceTest {
 	void getByName_TEST() {
 		String userId = "nyj9349";
 		Optional<TeacherInfo> byLoginId1 = teacherRepository.findByLoginId( userId );
+	}
+	
+	@Test
+	@DisplayName( "교사 페이징 목록" )
+	void pagingList_TEST() {
+		TeacherCnd cnd = new TeacherCnd();
+		Map<String, Object> teacherPageListByCnd = teacherService.getTeacherPageListByCnd( cnd );
+		System.out.println( "teacherPageListByCnd = " + teacherPageListByCnd );
+		
 	}
 }

@@ -10,8 +10,9 @@ import LoadingSpinTD from "@/app/components/LoadingSpinTD";
 import { usePathname, useRouter, useSearchParams, } from "next/navigation";
 import { Form } from "react-bootstrap";
 import axios from "axios";
+import constant from '@/app/utils/constant';
 
-export default function Home() {
+export default function RemnantListPage() {
 	
 	const router = useRouter();
 	const pathname = usePathname(); // 현재 경로를 가져옴
@@ -30,6 +31,7 @@ export default function Home() {
 	const [ searchFlag, setSearchFlag ] = useState( true );
 	
 	const searchInputRef = useRef( null );
+	const columnCnt = Object.keys( constant.remnantColumnObj ).length;
 	
 	// init 1 page if queryParam is null
 	useEffect( () => {
@@ -139,14 +141,14 @@ export default function Home() {
 		if ( loading ) {
 			return (
 				<tr>
-					<LoadingSpinTD colSpan={ 6 }/>
+					<LoadingSpinTD colSpan={ columnCnt }/>
 				</tr>
 			);
 		}
 		else if ( rtList.length < 1 ) {
 			return (
 				<tr>
-					<EmptyTD colSpan={ 6 }/>
+					<EmptyTD colSpan={ columnCnt }/>
 				</tr>
 			)
 		}
@@ -181,14 +183,14 @@ export default function Home() {
 		<>
 			<Container>
 				<div className={ 'container-header' }>
-					<h3>Remnant Home</h3>
+					<h3>렘넌트 현황</h3>
 				</div>
 				<div className={ 'text-align-right mb-1' }>
 					<div style={ { display : "inline-block", float : "left" } }>
-						<span>총 게시글</span>
+						<span>총&nbsp;</span>
 						<span style={ { margin : "0px 2px" } }>:</span>
 						<span>{ totalCount }</span>
-						<span>건</span>
+						<span>&nbsp;건</span>
 					</div>
 					<MyButton link="/remnant/info?mode=insert"
 					          color="outline-primary"
@@ -199,12 +201,12 @@ export default function Home() {
 					<Table bordered className={ "tb-rt" }>
 						<thead>
 						<tr>
-							<th width={"15%"}>등록번호</th>
-							<th width={"30%"}>이름</th>
-							<th width={ "10%" }>성별</th>
-							<th width={ "10%" }>학년</th>
-							<th width={ "15%" }>등록일</th>
-							<th width={ "15%" }>수정일</th>
+							<th width={ constant.remnantColumnObj.id.width }>등록번호</th>
+							<th width={ constant.remnantColumnObj.name.width }>이름</th>
+							<th width={ constant.remnantColumnObj.gender.width }>성별</th>
+							<th width={ constant.remnantColumnObj.grade.width }>학년</th>
+							<th width={ constant.remnantColumnObj.inputDate.width }>등록일</th>
+							<th width={ constant.remnantColumnObj.updateDate.width }>수정일</th>
 						</tr>
 						</thead>
 						<tbody>

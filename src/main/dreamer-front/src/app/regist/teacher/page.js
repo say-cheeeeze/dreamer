@@ -5,7 +5,7 @@ import { useState } from "react";
 import { redirect, useRouter } from "next/navigation";
 import Link from "next/link";
 import axios from "axios";
-import { StatusCode } from 'http-status-codes';
+import { StatusCodes } from 'http-status-codes';
 
 /**
  * 신규 교사 등록 화면
@@ -58,14 +58,14 @@ export default function TeacherRegist() {
 		
 		axios.post( URL_TEACHER_SAVE, teacherDTO ).then( res => {
 			
-			if ( res.data.status === StatusCode.OK ) {
+			if ( res.data.status === StatusCodes.OK ) {
 				localStorage.setItem( "authToken", res.data.token );
 				localStorage.setItem( "userId", res.data.teacherDto.loginId );
 				router.push( '/regist/welcome', { scroll : false } );
 			}
 			
 			// 중복ID
-			if ( res.data.status === StatusCode.CONFLICT ) {
+			if ( res.data.status === StatusCodes.CONFLICT ) {
 				alert( res.data.message );
 			}
 			

@@ -5,7 +5,7 @@ import CommonJs from "@lib/common";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "react-bootstrap/Image";
 import axios from "axios";
-import { StatusCode } from "http-status-codes";
+import { StatusCodes } from "http-status-codes";
 
 export default function RemnantForm( { mode } ) {
 	
@@ -25,9 +25,6 @@ export default function RemnantForm( { mode } ) {
 	const defaultImgFileName = '/user.png';
 	const fileRef = useRef( null ); // fileInputRef
 	const router = useRouter();
-	const isInsertMode = mode === 'insert';
-	const isUpdateMode = mode === 'update';
-	const isViewMode = mode === 'view';
 	const [ modalShow, setModalShow ] = useState( false );
 	const [ modalBodyTxt, setModalBodyTxt ] = useState( '' );
 	const searchParams = useSearchParams(); // next/navigation의 useSearchParams 사용
@@ -36,6 +33,9 @@ export default function RemnantForm( { mode } ) {
 	const [ imageUrl, setImageUrl ] = useState( defaultImgFileName );
 	const [ hasImg, setHasImg ] = useState( false );
 	const [ file, setFile ] = useState( null );
+	const isInsertMode = mode === 'insert';
+	const isUpdateMode = mode === 'update';
+	const isViewMode = mode === 'view';
 	
 	useEffect( () => {
 		
@@ -166,8 +166,6 @@ export default function RemnantForm( { mode } ) {
 		}
 		formData.append( "data", JSON.stringify( remInfo ) );
 		
-		console.log( [...formData] );
-		
 		if ( file !== null ) {
 			formData.append( 'file', file );
 		}
@@ -178,7 +176,7 @@ export default function RemnantForm( { mode } ) {
 			}
 		} ).then( res => {
 			
-			if ( res.data.status === StatusCode.OK ) {
+			if ( res.data.status === StatusCodes.OK ) {
 				router.replace( '/remnant/info?id=' + res.data.saveInfo.id + '&mode=view' );
 			}
 			else {

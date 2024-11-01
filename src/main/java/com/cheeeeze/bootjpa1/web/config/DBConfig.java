@@ -21,7 +21,6 @@ public class DBConfig {
 	@ConfigurationProperties( "spring.datasource.hikari" )
 	public HikariConfig hikariConfig() {
 		HikariConfig hikariConfig = new HikariConfig();
-		
 		// 수정이 필요한 경우에 세팅한다.
 //		hikariConfig.setConnectionTimeout(...);
 //		hikariConfig.setMaximumPoolSize( ... );
