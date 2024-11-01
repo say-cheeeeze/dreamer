@@ -1,5 +1,5 @@
 'use client'
-import { Button, Form, Modal } from "react-bootstrap";
+import { Button, FloatingLabel, Form, Modal } from "react-bootstrap";
 import { useEffect, useRef, useState } from "react";
 import CommonJs from "@lib/common";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -10,18 +10,24 @@ import { StatusCodes } from "http-status-codes";
 export default function RemnantForm( { mode } ) {
 	
 	const [ remnantObj, setRemnantObj ] = useState( {
-		name   : '',
-		id     : 0,
-		grade  : '',
-		gender : ''
+		name     : '',
+		id       : 0,
+		gender   : '',
+		birth    : '',
+		grade    : '',
+		school   : '',
+		phone    : '',
+		favorite : '',
+		friend   : '',
+		history  : '',
 	} );
-	const [ imageObj, setImageObj ] = useState({
-		id : 0,
-		fileFullPath : '',
+	const [ imageObj, setImageObj ] = useState( {
+		id             : 0,
+		fileFullPath   : '',
 		uploadFileName : '',
-		saveFileName : '',
-		fileSize : 0,
-	})
+		saveFileName   : '',
+		fileSize       : 0,
+	} )
 	const defaultImgFileName = '/user.png';
 	const fileRef = useRef( null ); // fileInputRef
 	const router = useRouter();
@@ -52,23 +58,15 @@ export default function RemnantForm( { mode } ) {
 		}
 	}, [] );
 	
-	const onChangeName = ( e ) => {
+	const onChangeInputHandler = ( e ) => {
+		const { name, value } = e.target;
 		setRemnantObj( {
 			...remnantObj,
-			name : e.target.value
+			[ name ] : value
 		} )
 	}
-	const onChangeGender = ( e ) => {
-		setRemnantObj( {
-			...remnantObj,
-			gender : e.target.value
-		} );
-	}
-	const onChangeGrade = ( e ) => {
-		setRemnantObj( {
-			...remnantObj,
-			grade : e.target.value
-		} );
+	const onClickSearchAddress = ( e ) => {
+		console.log( e );
 	}
 	
 	function getRemnantInfoById( id ) {
@@ -154,14 +152,17 @@ export default function RemnantForm( { mode } ) {
 			return;
 		}
 		
+		console.log( remnantObj );
+		return;
+		
 		const url = '/api/remnant/save';
 		const formData = new FormData();
 		
 		let remInfo = {
-			id     : remnantObj.id,
-			name   : remnantObj.name,
-			grade  : remnantObj.grade,
-			gender : remnantObj.gender,
+			id       : remnantObj.id,
+			name     : remnantObj.name,
+			grade    : remnantObj.grade,
+			gender   : remnantObj.gender,
 			imageDto : imageObj
 		}
 		formData.append( "data", JSON.stringify( remInfo ) );
@@ -183,132 +184,304 @@ export default function RemnantForm( { mode } ) {
 				alert( "오류가 발생했습니다" );
 				location.reload();
 			}
-		}).catch( e => {
+		} ).catch( e => {
 			console.error( e );
 			alert( "오류가 발생했습니다" );
-		});
+		} );
 	}
 	
 	return (
 		<>
-			<div className={ 'rt-area-wrapper' }>
-				<div className={ 'rt-area-left' }>
-					<div className={ 'm-3' }>
-						<div className={ 'd-inline-block min-width-5rem' }>
-							<span>이름</span>
-							{ isInsertMode || isUpdateMode
-								? <span className={ 'red' }>*</span>
-								: null
-							}
-						</div>
-						<div className={ 'd-inline-block' }>
-							{
-								isInsertMode || isUpdateMode
-									? <Form.Control type="text"
-									                placeholder=""
-									                required
-									                value={ remnantObj.name }
-									                onChange={ onChangeName }/>
-									: <span>{ remnantObj.name }</span>
-							}
-						</div>
-					</div>
-					<div className={ 'm-3' }>
-						<div className={ 'd-inline-block min-width-5rem' }>
-							<span>학년</span>
-							{ isInsertMode || isUpdateMode
-								? <span className={ 'red' }>*</span>
-								: null
-							}
-						</div>
-						<div className={ 'd-inline-block' }>
-							{
-								isInsertMode || isUpdateMode ?
-									<Form.Select required
-									             value={ remnantObj.grade }
-									             onChange={ onChangeGrade }>
-										<option value={ '' }>--선택--</option>
-										<option value="1">1</option>
-										<option value="2">2</option>
-										<option value="3">3</option>
-										<option value="4">4</option>
-										<option value="5">5</option>
-										<option value="6">6</option>
-									</Form.Select>
-									:
-									<span>{ remnantObj.grade }</span>
-							}
-						</div>
-					</div>
-					<div className={ 'm-3' }>
-						<div className={ 'd-inline-block min-width-5rem' }>
-							<span>성별</span>
-							{ isInsertMode || isUpdateMode
-								? <span className={ 'red' }>*</span>
-								: null
-							}
-						</div>
-						<div className={ 'd-inline-block' }>
-							{ isInsertMode || isUpdateMode ?
-								<>
-									<Form.Check inline required onChange={ onChangeGender }
-									            label="남"
-									            checked={ remnantObj.gender === '남자' }
-									            value={ '남자' }
-									            type={ 'radio' }
-									/>
-									<Form.Check inline required onChange={ onChangeGender }
-									            label="여"
-									            checked={ remnantObj.gender === '여자' }
-									            value={ '여자' }
-									            type={ 'radio' }
-									/>
-								</>
-								:
-								<>{ remnantObj.gender }</>
-							}
-						</div>
-					</div>
-				</div>
-				<div className={ 'rt-area-right' }>
-					<div style={ { width : '100%' } }>
-						<div className={ "rt-img-wrapper" }>
-							<Image src={ imageUrl }
-							       rounded
-							       className={
-								       !hasImg
-									       ? 'rt-img-default'
-									       : 'rt-img-upload'
-							       }
-							       onClick={ () => onClickImg() }
-							/>
-						</div>
-						{
-							!isViewMode && (
-								<div>
-									<div className={ "d-grid gap-2" }>
-										<input type={ "file" }
-										       accept={ "image/*" }
-										       style={ { display : "none" } }
-										       onChange={ ( e ) => onFileUpload( e ) }
-										       ref={ fileRef }/>
-										<Button variant={ 'outline-primary' }
-										        onClick={ () => fileRef.current.click() }>
-											사진 등록
-										</Button>
-										<Button variant={ 'outline-primary' }
-										        disabled={ !hasImg }
-										        onClick={ () => onClearImage() }>
-											제거
-										</Button>
+			<div className="table-responsive remnant-regist-area">
+				<table className={ 'table' }>
+					<tbody>
+					<tr>
+						<td className="w-auto" rowSpan={ 4 }>
+							<div className="img-area">
+								<input type={ "file" }
+								       accept={ "image/*" }
+								       style={ { display : "none" } }
+								       onChange={ ( e ) => onFileUpload( e ) }
+								       ref={ fileRef }/>
+								<Image className="rt-image" src={ imageUrl }/>
+								{ !isViewMode && !hasImg &&
+									(
+									<button className="overlay-button"
+									        type="button"
+									        onClick={ () => fileRef.current.click() }
+									>
+										등록
+									</button>
+									)
+								}
+								{
+									!isViewMode && hasImg &&
+									(
+									<button className="overlay-button"
+									        type="button"
+									        onClick={ onClearImage }
+									>
+										제거
+									</button>
+									)
+								}
+							</div>
+						</td>
+						<td className="w-35p">
+							<div className="d-flex justify-content-between align-items-center">
+								<div className="f-1">
+									<span>이름</span>
+									{ !isViewMode
+										&& <span className={ 'color-red' }>*</span>
+									}
+								</div>
+								<div className="f-2">
+									{
+										isInsertMode || isUpdateMode
+											? <Form.Control type="text"
+											                required
+											                placeholder=""
+											                name="name"
+											                maxLength={ 20 }
+											                value={ remnantObj.name }
+											                onChange={ onChangeInputHandler }/>
+											: <span>{ remnantObj.name }</span>
+									}
+								</div>
+							</div>
+						</td>
+						<td className="w-35p">
+							<div className="d-flex justify-content-between align-items-center">
+								<div className="f-1">
+									<span>성별</span>
+									{ !isViewMode
+										&& <span className={ 'color-red' }>*</span>
+									}
+								</div>
+								<div className="f-2">
+									{ !isViewMode ?
+										<>
+											<Form.Check inline
+											            required
+											            name="gender"
+											            onChange={ onChangeInputHandler }
+											            label="남"
+											            checked={ remnantObj.gender === '남자' }
+											            value={ '남자' }
+											            type={ 'radio' }
+											/>
+											<Form.Check inline
+											            required
+											            name="gender"
+											            onChange={ onChangeInputHandler }
+											            label="여"
+											            checked={ remnantObj.gender === '여자' }
+											            value={ '여자' }
+											            type={ 'radio' }
+											/>
+										</>
+										:
+										<span>{ remnantObj.gender }</span>
+									}
+								</div>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td className="w-35p">
+							<div className="d-flex justify-content-between align-items-center">
+								<div className="f-1">
+									<span>생년월일</span>
+									{ !isViewMode
+										&& <span className={ 'color-red' }>*</span>
+									}
+								</div>
+								<div className="f-2">
+									{
+										!isViewMode ?
+											<>
+												<FloatingLabel controlId="floatingBirthLabel"
+												               label="예)20120103">
+													<Form.Control type="text"
+													              required
+													              placeholder=""
+													              name="birth"
+													              maxLength={ 8 }
+													              value={ remnantObj.birth }
+													              onChange={ onChangeInputHandler }/>
+												</FloatingLabel>
+											</>
+											: <span>{ remnantObj.birth }</span>
+									}
+								</div>
+							</div>
+						</td>
+						<td className="w-35p">
+						</td>
+					</tr>
+					<tr>
+						<td className="w-35p">
+							<div className="d-flex justify-content-between align-items-center">
+								<div className="f-1">
+									<span>학년</span>
+									{ !isViewMode
+										&& <span className={ 'color-red' }>*</span>
+									}
+								</div>
+								<div className="f-2">
+									{
+										!isViewMode ?
+											<Form.Select required
+											             name="grade"
+											             value={ remnantObj.grade }
+											             onChange={ onChangeInputHandler }>
+												<option value={ '' }>--선택--</option>
+												<option value="1">1</option>
+												<option value="2">2</option>
+												<option value="3">3</option>
+												<option value="4">4</option>
+												<option value="5">5</option>
+												<option value="6">6</option>
+											</Form.Select>
+											:
+											<span>{ remnantObj.grade }</span>
+									}
+								</div>
+							</div>
+						</td>
+						<td className="w-35p">
+							<div className="d-flex justify-content-between align-items-center">
+								<div className="f-1">
+									<span>학교</span>
+									{ !isViewMode
+										&& <span className={ 'color-red' }>*</span>
+									}
+								</div>
+								<div className="f-2">
+									{
+										!isViewMode ?
+											<Form.Control type="text"
+											              name="school"
+											              placeholder=""
+											              required
+											              maxLength={ 20 }
+											              value={ remnantObj.school }
+											              onChange={ onChangeInputHandler }/>
+											:
+											<span>{ remnantObj.school }</span>
+									}
+								</div>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td className="w-auto" colSpan={ 2 }>
+							<div className="d-flex justify-content-between align-items-center">
+								<div className="f-1">
+									<span>주소</span>
+								</div>
+								<div className="f-5 text-align-left">
+									<div className="d-inline-block">
+										<Form.Control type="text"
+										              placeholder="우편번호"/>
+									</div>
+									<div className="d-inline-block">
+										<Button variant="secondary" onClick={ onClickSearchAddress }>검색</Button>
+									</div>
+									<div className="d-flex mt-custom-sm">
+										<div className="f-1">
+											<Form.Control type="text"
+											              placeholder="도로명주소"/>
+										</div>
+										<div className="f-1">
+											<Form.Control type="text"
+											              placeholder="지번주소"/>
+										</div>
+									</div>
+									<div className="d-flex mt-custom-sm">
+										<div className="f-1">
+											<Form.Control type="text"
+											              placeholder="상세주소"/>
+										</div>
+										<div className="f-1">
+											<Form.Control type="text"
+											              placeholder="참고항목"/>
+										</div>
 									</div>
 								</div>
-							)
-						}
-					</div>
-				</div>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td className="w-auto">
+							<div className="d-flex justify-content-between align-items-center">
+								<div className="f-1">
+									<span>연락처</span>
+								</div>
+								<div className="f-2">
+									<FloatingLabel label="예)01023705000" controlId="floatingPhoneLabel">
+										<Form.Control type="text"
+										              placeholder=""
+										              name="phone"
+										              maxLength={11}
+										              onChange={ onChangeInputHandler }
+										              value={ remnantObj.phone }/>
+									</FloatingLabel>
+								</div>
+							</div>
+						</td>
+						<td className="w-35p">
+							<div className="d-flex justify-content-between align-items-center">
+								<div className="f-1">
+									<span>좋아하는 것</span>
+								</div>
+								<div className="f-2">
+									<Form.Control type="text"
+									              name="favorite"
+									              maxLength={30}
+									              onChange={ onChangeInputHandler }
+									              value={ remnantObj.favorite }
+									              placeholder=""/>
+								</div>
+							</div>
+						</td>
+						<td className="w-35p">
+							<div className="d-flex justify-content-between align-items-center">
+								<div className="f-1">
+									<span>친한 친구</span>
+								</div>
+								<div className="f-2">
+									<Form.Control type="text"
+									              name="friend"
+									              onChange={ onChangeInputHandler }
+									              value={ remnantObj.friend }
+									              placeholder=""/>
+								</div>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td className="w-auto" colSpan={ 3 }>
+							<div className="d-flex justify-content-between align-items-center">
+								<div className="f-9">
+									<FloatingLabel controlId="floatingTextarea2" label="언약의 여정">
+										<Form.Control
+											as="textarea"
+											name="history"
+											value={ remnantObj.history }
+											placeholder="Leave a comment here"
+											onChange={ onChangeInputHandler }
+											style={ { height : '100px' } }
+										/>
+									</FloatingLabel>
+								</div>
+							</div>
+						</td>
+					</tr>
+					</tbody>
+				</table>
 			</div>
-			{ ( isInsertMode || isUpdateMode ) &&
+			{ !isViewMode &&
 				<div className={ "mt-5rem" }>
 					<div className="d-grid gap-2">
 						<Button variant="primary"
