@@ -37,6 +37,15 @@ public class RemnantServiceTest {
 		remDTO.setName( "남윤재" );
 		remDTO.setGender( Gender.MALE );
 		remDTO.setGrade( "6" );
+		remDTO.setBirth( "891107" );
+		remDTO.setSchool( "덕원중" );
+		remDTO.setFriend( "김형중" );
+		remDTO.setZoneCode( "07938" );
+		remDTO.setFullAddr( "서울시 양천구 은행정로 98 미광아파트" );
+		remDTO.setRoadAddr( "서울시 양천구 은행정로 98" );
+		remDTO.setJibunAddr( "서울시 양천구 신정4동 881-16" );
+		remDTO.setHistory( "이런저런이런저\n런이런저런이런저런이런저\n        런이런저런이런저런이런저런이런저런이런저런이런저런이런저런이런저런이런저런이런저런이런저런이런저런이런저런이런저런이런저런이런저런이런저런이런저런이런저런이런저런이런저런이런저런이런저런이런저런이런저런이런저런이런저런이런저런" );
+		remDTO.setEtcAddr( "503호" );
 		
 		RemnantInfo remnantEntity = remDTO.toRemnantEntity();
 		RemnantInfo save = remnantInfoRepository.save( remnantEntity );

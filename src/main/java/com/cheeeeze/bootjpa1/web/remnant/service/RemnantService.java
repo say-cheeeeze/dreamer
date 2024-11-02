@@ -78,7 +78,7 @@ public class RemnantService {
 		RemnantInfo remnantInfo = remnantRepository.findById( remnantDto.getId() )
 												   .orElseThrow( () -> new RuntimeException( "등록된 렘넌트 정보가 없습니다" ) );
 		
-		remnantInfo.updateRemnantInfo( remnantDto.getName(), remnantDto.getGrade(), remnantDto.getGender() );
+		remnantInfo.updateRemnantInfo( remnantDto );
 		
 		// 요청 파라미터에 이미지가 있는 경우
 		if ( remnantDto.getImageDto() != null && remnantDto.getImageDto().getFileSize() > 0 ) {

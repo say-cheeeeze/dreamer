@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Image from "react-bootstrap/Image";
 import axios from "axios";
 import { StatusCodes } from "http-status-codes";
+import DaumPost from "@/app/components/daumPost";
 
 export default function RemnantForm( { mode } ) {
 	
@@ -20,6 +21,11 @@ export default function RemnantForm( { mode } ) {
 		favorite : '',
 		friend   : '',
 		history  : '',
+		roadAddr : '',
+		jibunAddr : '',
+		zoneCode : '',
+		fullAddr : '',
+		etcAddr : '',
 	} );
 	const [ imageObj, setImageObj ] = useState( {
 		id             : 0,
@@ -60,14 +66,20 @@ export default function RemnantForm( { mode } ) {
 	
 	const onChangeInputHandler = ( e ) => {
 		const { name, value } = e.target;
+		
+		if ( 'phone' === name ) {
+			const phoneExp = /^[0-9]+$/;
+			const isOnlyNumber = phoneExp.test( value );
+			if ( !isOnlyNumber && !CommonJs.isEmpty( value ) ) {
+				return;
+			}
+		}
 		setRemnantObj( {
 			...remnantObj,
 			[ name ] : value
 		} )
 	}
-	const onClickSearchAddress = ( e ) => {
-		console.log( e );
-	}
+	
 	
 	function getRemnantInfoById( id ) {
 		
@@ -102,6 +114,30 @@ export default function RemnantForm( { mode } ) {
 	function showModalWithMessage( msg ) {
 		setModalBodyTxt( msg );
 		showModal();
+	}
+	
+	function onDaumPostComplete( data ) {
+		console.log( data );
+		
+		let fullAddress = data.address;
+		let extraAddress = '';
+		if ( data.addressType === 'R' ) {
+			if ( data.bname !== '' ) {
+				extraAddress += data.bname;
+			}
+			if ( data.buildingName !== '' ) {
+				extraAddress += extraAddress !== '' ? `, ${ data.buildingName }` : data.buildingName;
+			}
+			fullAddress += extraAddress !== '' ? ` (${ extraAddress })` : '';
+		}
+		
+		setRemnantObj({
+			...remnantObj,
+			roadAddr : data.roadAddress,
+			jibunAddr : data.jibunAddress,
+			zoneCode : data.zonecode,
+			fullAddr : fullAddress,
+		})
 	}
 	
 	function onClickImg() {
@@ -206,23 +242,23 @@ export default function RemnantForm( { mode } ) {
 								<Image className="rt-image" src={ imageUrl }/>
 								{ !isViewMode && !hasImg &&
 									(
-									<button className="overlay-button"
-									        type="button"
-									        onClick={ () => fileRef.current.click() }
-									>
-										등록
-									</button>
+										<button className="overlay-button"
+										        type="button"
+										        onClick={ () => fileRef.current.click() }
+										>
+											등록
+										</button>
 									)
 								}
 								{
 									!isViewMode && hasImg &&
 									(
-									<button className="overlay-button"
-									        type="button"
-									        onClick={ onClearImage }
-									>
-										제거
-									</button>
+										<button className="overlay-button"
+										        type="button"
+										        onClick={ onClearImage }
+										>
+											제거
+										</button>
 									)
 								}
 							</div>
@@ -383,28 +419,40 @@ export default function RemnantForm( { mode } ) {
 								<div className="f-5 text-align-left">
 									<div className="d-inline-block">
 										<Form.Control type="text"
+										              disabled={ true }
+										              value={ remnantObj.zoneCode }
 										              placeholder="우편번호"/>
 									</div>
 									<div className="d-inline-block">
-										<Button variant="secondary" onClick={ onClickSearchAddress }>검색</Button>
+										<DaumPost onComplete={ onDaumPostComplete }/>
 									</div>
 									<div className="d-flex mt-custom-sm">
 										<div className="f-1">
 											<Form.Control type="text"
+											              disabled={true}
+											              value={ remnantObj.roadAddr }
 											              placeholder="도로명주소"/>
 										</div>
 										<div className="f-1">
 											<Form.Control type="text"
+											              disabled={ true }
+											              value={ remnantObj.jibunAddr }
 											              placeholder="지번주소"/>
 										</div>
 									</div>
 									<div className="d-flex mt-custom-sm">
 										<div className="f-1">
 											<Form.Control type="text"
+											              name='fullAddr'
+											              onChange={ onChangeInputHandler }
+											              value={ remnantObj.fullAddr }
 											              placeholder="상세주소"/>
 										</div>
 										<div className="f-1">
 											<Form.Control type="text"
+											              name='etcAddr'
+											              onChange={ onChangeInputHandler }
+											              value={ remnantObj.etcAddr }
 											              placeholder="참고항목"/>
 										</div>
 									</div>
@@ -423,7 +471,7 @@ export default function RemnantForm( { mode } ) {
 										<Form.Control type="text"
 										              placeholder=""
 										              name="phone"
-										              maxLength={11}
+										              maxLength={ 11 }
 										              onChange={ onChangeInputHandler }
 										              value={ remnantObj.phone }/>
 									</FloatingLabel>
@@ -438,7 +486,7 @@ export default function RemnantForm( { mode } ) {
 								<div className="f-2">
 									<Form.Control type="text"
 									              name="favorite"
-									              maxLength={30}
+									              maxLength={ 30 }
 									              onChange={ onChangeInputHandler }
 									              value={ remnantObj.favorite }
 									              placeholder=""/>
