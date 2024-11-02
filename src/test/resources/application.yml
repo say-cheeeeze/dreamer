@@ -44,8 +44,8 @@ logging:
 
 # @Value( ${keyname} ) 으로 사용가능
 image:
-  root_dir: /Users/cheeeeze/git/bootjpa1/src/main/resources/static/images/
-  build_dir: /Users/cheeeeze/git/bootjpa1/out/production/resources/static/images/
+  root_dir: /Users/cheeeeze/git/dreamer/src/main/resources/static/images/
+  build_dir: /Users/cheeeeze/git/dreamer/out/production/resources/static/images/
 
 service:
     jwt:

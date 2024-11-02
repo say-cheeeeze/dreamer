@@ -24,12 +24,14 @@ public class RemnantDTO {
 	private Gender gender;
 	private String birth;
 	
+	private String phone;
 	private String school;
 	private String roadAddr;
 	private String jibunAddr;
 	private String zoneCode;
-	private String fullAddr;
 	
+	private String fullAddr;
+	private String favorite;
 	private String etcAddr;
 	private String friend;
 	private String history;
@@ -46,12 +48,15 @@ public class RemnantDTO {
 		builder.gender( this.gender );
 		builder.birth( this.birth );
 		
+		builder.phone( this.phone );
 		builder.school( this.school );
 		builder.roadAddr( this.roadAddr );
 		builder.jibunAddr( this.jibunAddr );
 		builder.zoneCode( this.zoneCode );
 		builder.fullAddr( this.fullAddr );
 		builder.etcAddr( this.etcAddr );
+		builder.friend( this.friend );
+		builder.favorite( this.favorite );
 		
 		builder.friend( this.friend );
 		builder.history( this.history );

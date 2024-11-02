@@ -35,11 +35,13 @@ public class RemnantInfo {
 	private String birth;
 	
 	/* 필수여부가 아닌 것들 */
+	private String phone;
 	private String school;
 	private String roadAddr;
 	private String jibunAddr;
 	private String zoneCode;
 	private String fullAddr;
+	private String favorite;
 	
 	private String etcAddr;
 	private String friend;
@@ -70,16 +72,18 @@ public class RemnantInfo {
 	
 	@Builder
 	public RemnantInfo( Long id, String name, String grade, Gender gender,
-						String birth, String school, String roadAddr, String jibunAddr,
-						String zoneCode, String fullAddr, String etcAddr, String friend, String history,
+						String birth, String school, String roadAddr, String jibunAddr, String phone,
+						String zoneCode, String fullAddr, String etcAddr, String friend, String history, String favorite,
 						ImageInfo imageInfo, LocalDateTime inputDate, LocalDateTime updateDate ) {
 		this.id = id;
 		this.name = name;
 		this.grade = grade;
 		this.gender = gender;
+		this.phone = phone;
 		this.imageInfo = imageInfo;
 		this.birth = birth;
 		this.school = school;
+		this.favorite = favorite;
 		this.roadAddr = roadAddr;
 		this.jibunAddr = jibunAddr;
 		this.zoneCode = zoneCode;
@@ -102,6 +106,8 @@ public class RemnantInfo {
 		this.birth = remnantDTO.getBirth();
 		this.school = remnantDTO.getSchool();
 		
+		this.phone = remnantDTO.getPhone();
+		this.favorite = remnantDTO.getFavorite();
 		this.roadAddr = remnantDTO.getRoadAddr();
 		this.jibunAddr = remnantDTO.getJibunAddr();
 		this.zoneCode = remnantDTO.getZoneCode();
@@ -120,6 +126,8 @@ public class RemnantInfo {
 		remnantDTO.setGender( this.gender );
 		remnantDTO.setBirth( this.birth );
 		
+		remnantDTO.setFavorite( this.favorite );
+		remnantDTO.setPhone( this.phone );
 		remnantDTO.setSchool( this.school );
 		remnantDTO.setRoadAddr( this.roadAddr );
 		remnantDTO.setJibunAddr( this.jibunAddr );

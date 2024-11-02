@@ -72,6 +72,10 @@ div.rt-img-wrapper {
     transition: opacity 0.3s ease;
 }
 
+.img-area:hover .rt-image.view {
+    opacity: unset;
+    cursor:pointer;
+}
 .img-area:hover .rt-image {
     opacity: 0.7;
 }
