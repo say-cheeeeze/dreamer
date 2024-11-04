@@ -38,7 +38,7 @@ public class RemnantService {
 	public RemnantDTO insertOrUpdate( RemnantDTO remnantDto ) {
 		
 		if ( essentialValidation( remnantDto ) ) {
-			throw new RuntimeException( "필수값 누락" );
+			throw new RuntimeException( "필수값이 누락되었습니다" );
 		}
 		if ( null == remnantDto.getId() || 0 == remnantDto.getId() ) {
 			return insertRemnant( remnantDto );
@@ -109,6 +109,8 @@ public class RemnantService {
 	private boolean essentialValidation( RemnantDTO remnantDto ) {
 		return !StringUtils.hasText( remnantDto.getName() ) ||
 			   !StringUtils.hasText( remnantDto.getGrade() ) ||
+			   !StringUtils.hasText( remnantDto.getBirth() ) ||
+			   !StringUtils.hasText( remnantDto.getSchool() ) ||
 			   null == remnantDto.getGender();
 	}
 	

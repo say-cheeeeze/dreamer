@@ -99,3 +99,45 @@ div.rt-img-wrapper {
 .img-area:hover .overlay-button {
     display: inline-block;
 }
+
+/* 댓글 영역 */
+.reply-container-wrapper {
+    background-color: #f3f3f3;
+    padding: 15px;
+    border-radius: 10px;
+}
+.reply-container-wrapper div.reply-input-area {
+    margin-bottom:1rem;
+}
+.reply-container-wrapper div.reply-listcnt-area {
+    margin-bottom:1rem;
+}
+.reply-container-wrapper div.reply-list-area {
+    margin-bottom:1rem;
+}
+.reply-container-wrapper div.reply-list-area .reply-item {
+    margin-bottom:1rem;
+}
+.reply-container-wrapper div.reply-list-area .reply-item span.reply-btn-span {
+    font-size:0.8rem;
+}
+.reply-container-wrapper div.reply-list-area .reply-item div.reply-btn-area {
+    border: solid 1px #c7c7c7;
+    padding: 1px 8px;
+    border-radius: 5px;
+    background-color: white;
+    width: fit-content;
+    cursor:pointer;
+    display:inline-block;
+}
+.reply-container-wrapper div.reply-list-area pre {
+    white-space:pre-wrap;
+}
+
+.reply-container-wrapper textarea.textarea-reply {
+    height: 120px;
+}
+.reply-container-wrapper .btn-save-reply {
+    width: 100%;
+    height: 100%;
+}

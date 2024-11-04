@@ -3,12 +3,15 @@ package com.cheeeeze.bootjpa1.web.remnant.controller;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
+import com.cheeeeze.bootjpa1.web.config.ObjectMapperConfig;
 import com.cheeeeze.bootjpa1.web.remnant.domain.RemnantCnd;
 import com.cheeeeze.bootjpa1.web.remnant.domain.RemnantDTO;
 import com.cheeeeze.bootjpa1.web.remnant.service.RemnantService;
 import com.cheeeeze.bootjpa1.web.rtimage.service.ImageService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -23,7 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class RemnantRestController {
 	
 	private final RemnantService remnantService;
-	private final ImageService imageService;
+	private final ObjectMapper objectMapper;
 	
 	/**
 	 * @description  : 단건 객체를 신규 등록 또는 수정합니다.
@@ -39,7 +42,6 @@ public class RemnantRestController {
 		log.info( "data => {}\n/ file exist? => {} ", data, file != null );
 		
 		try {
-			ObjectMapper objectMapper = new ObjectMapper();
 			RemnantDTO rtDto = objectMapper.readValue( data, RemnantDTO.class );
 			
 			log.info( String.valueOf( rtDto ) );

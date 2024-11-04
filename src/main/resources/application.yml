@@ -48,7 +48,7 @@ spring:
 logging:
   level:
     com.zaxxer.hikari.pool.HikariPool: warn
-    org.hibernate.orm.jdbc.bind: trace # show parameter binding
+    org.hibernate.orm.jdbc.bind: warn # show parameter binding
     org.apache.coyote.http11: warn # http 전송 데이터 모두 보여줌(debug)
 
 

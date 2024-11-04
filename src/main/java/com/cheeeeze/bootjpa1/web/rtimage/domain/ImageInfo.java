@@ -86,10 +86,10 @@ public class ImageInfo {
 		return imageDTO;
 	}
 	
-	public void updateImageInfo( String fileFullPath, String saveFileName, String uploadFileName, Long fileSize ) {
-		this.fileFullPath = fileFullPath;
-		this.saveFileName = saveFileName;
-		this.uploadFileName = uploadFileName;
-		this.fileSize = fileSize;
+	public void updateImageInfo( ImageDTO imageDto ) {
+		this.fileFullPath = imageDto.getFileFullPath();
+		this.saveFileName = imageDto.getSaveFileName();
+		this.uploadFileName = imageDto.getUploadFileName();
+		this.fileSize = imageDto.getFileSize();
 	}
 }

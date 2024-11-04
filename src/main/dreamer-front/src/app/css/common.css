@@ -6,10 +6,10 @@ body { min-height: 100vh; width:100%; }
     padding:0;
     box-sizing:border-box;
 }
-body { font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif; }
+body, span, p, pre { font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif !important; }
 a { color:inherit; text-decoration: none; }
 li { list-style: none;}
-
+textarea { font-size:0.8rem !important; resize:none;}
 
 @media (min-width: 1200px) {
     .container, .container-lg, .container-md, .container-sm, .container-xl {

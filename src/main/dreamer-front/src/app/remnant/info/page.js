@@ -64,10 +64,9 @@ export default function page() {
 										>삭제</Button>
 									</div>
 									<div className={ "d-inline-block mr-1" }>
-										<MyButton link={ '/remnant/info?id=' + _id + '&mode=update' }
-										          color="outline-primary"
-										          text="수정"
-										/>
+										<Button onClick={ () => router.replace( '/remnant/info?id=' + _id + '&mode=update') }
+										        variant={ "outline-primary" }>수정
+										</Button>
 									</div>
 								</>
 							)

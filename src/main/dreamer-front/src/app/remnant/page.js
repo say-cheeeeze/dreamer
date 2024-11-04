@@ -167,7 +167,16 @@ export default function RemnantListPage() {
 						<span>{ rtInfo.gender }</span>
 					</td>
 					<td>
+						<span>{ rtInfo.school }</span>
+					</td>
+					<td>
 						<span>{ rtInfo.grade }</span>
+					</td>
+					<td>
+						<span>{ rtInfo.phone }</span>
+					</td>
+					<td>
+						<span>{ rtInfo.birth }</span>
 					</td>
 					<td>
 						<span>{ rtInfo.inputDate }</span>
@@ -201,10 +210,13 @@ export default function RemnantListPage() {
 					<Table bordered className={ "tb-rt" }>
 						<thead>
 						<tr>
-							<th width={ constant.remnantColumnObj.id.width }>등록번호</th>
+							<th width={ constant.remnantColumnObj.id.width }>No.</th>
 							<th width={ constant.remnantColumnObj.name.width }>이름</th>
 							<th width={ constant.remnantColumnObj.gender.width }>성별</th>
+							<th width={ constant.remnantColumnObj.school.width }>학교</th>
 							<th width={ constant.remnantColumnObj.grade.width }>학년</th>
+							<th width={ constant.remnantColumnObj.phone.width }>연락처</th>
+							<th width={ constant.remnantColumnObj.birth.width }>생년월일</th>
 							<th width={ constant.remnantColumnObj.inputDate.width }>등록일</th>
 							<th width={ constant.remnantColumnObj.updateDate.width }>수정일</th>
 						</tr>

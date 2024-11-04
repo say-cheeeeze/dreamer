@@ -32,27 +32,39 @@ export default {
 	remnantColumnObj : {
 		id         : {
 			text  : 'id',
-			width : '15%',
+			width : '8%',
 		},
 		name       : {
 			text  : 'name',
-			width : '30%',
+			width : '15%',
 		},
-		gender      : {
+		gender : {
 			text  : 'gender',
+			width : '8%',
+		},
+		school : {
+			text  : 'school',
+			width : '13%',
+		},
+		phone : {
+			text  : 'phone',
+			width : '13%',
+		},
+		birth : {
+			text  : 'birth',
 			width : '10%',
 		},
 		grade      : {
 			text  : 'grade',
-			width : '10%',
+			width : '8%',
 		},
 		inputDate  : {
 			text  : 'inputDate',
-			width : '15%',
+			width : 'auto'
 		},
 		updateDate : {
 			text  : 'updateDate',
-			width : '15%',
+			width : 'auto'
 		},
 	}
 	

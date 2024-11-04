@@ -7,6 +7,7 @@ import Image from "react-bootstrap/Image";
 import axios from "axios";
 import { StatusCodes } from "http-status-codes";
 import DaumPost from "@/app/components/daumPost";
+import AlertModal from "@/app/components/alertmodal";
 
 export default function RemnantForm( { mode } ) {
 	
@@ -20,7 +21,18 @@ export default function RemnantForm( { mode } ) {
 	} );
 	const [ imageObj, setImageObj ] = useState( {
 		id : 0, fileFullPath : '', uploadFileName : '', saveFileName : '', fileSize : 0,
-	} )
+	} );
+	
+	const [ reply, setReply ] = useState( '' );
+	const [ replyList, setReplyList ] = useState( [
+		{
+			id        : 1,
+			content   : '전능하사 천지를 만드신 하나님 아버지를 믿사오니 이는\n\n전능하사 천지를 만드신 하나님 아버지를 믿사오니 이는전능하사 천지를 만드신 하나님 아버지를 믿사오니 이는전능하사 천지를 만드신 하나님 아버지를 믿사오니 이는전능하사 천지를 만드신 하나님 아버지를 믿사오니 이는전능하사 천지를 만드신 하나님 아버지를 믿사오니 이는전능하사 천지를 만드신 하나님 아버지를 믿사오니 이는',
+			inputDate : '2024-11-03 21:03',
+			name      : '남윤재'
+		},
+	] );
+	
 	const defaultImgFileName = '/user.png';
 	const fileRef = useRef( null ); // fileInputRef
 	const router = useRouter();
@@ -32,9 +44,13 @@ export default function RemnantForm( { mode } ) {
 	const [ imageUrl, setImageUrl ] = useState( defaultImgFileName );
 	const [ hasImg, setHasImg ] = useState( false );
 	const [ file, setFile ] = useState( null );
+	const [ replyEditId, setReplyEditId ] = useState( -1 );
+	const [ updateReplyText, setUpdateReplyText ] = useState('');
+	
 	const isInsertMode = mode === 'insert';
 	const isUpdateMode = mode === 'update';
 	const isViewMode = mode === 'view';
+	
 	
 	useEffect( () => {
 		
@@ -81,6 +97,72 @@ export default function RemnantForm( { mode } ) {
 			
 		} ).finally( () => {
 		} );
+	}
+	
+	function setReplyDOM() {
+		
+		return replyList.map( ( info, idx ) => (
+			<div key={ idx } className="reply-item">
+				<div className="reply-head d-flex align-items-center justify-content-between mb-3">
+					<div className="f-8">
+						<div className="d-inline-block mr-5">
+							<span>{ info.name }</span>
+						</div>
+						<div className="d-inline-block color-gray-50">
+							<span>{ info.inputDate }</span>
+						</div>
+					</div>
+					<div className="f-1 text-align-right">
+						{
+							replyEditId === info.id
+								? <>
+									<div className="reply-btn-area mr-1"
+									     onClick={ () => cancelEditReply() }>
+										<span className="reply-btn-span">취소</span>
+									</div>
+									<div className="reply-btn-area"
+									     onClick={ () => updateReply( info ) }>
+										<span className="reply-btn-span">저장</span>
+									</div>
+								</>
+								: <>
+									<div className="reply-btn-area mr-1"
+									     onClick={ () => onEditModeReply( info ) }>
+										<span className="reply-btn-span">수정</span>
+									</div>
+									<div className="reply-btn-area"
+									     onClick={ () => deleteReply( info.id ) }>
+										<span className="reply-btn-span">삭제</span>
+									</div>
+								</>
+						}
+					</div>
+				</div>
+				<div>
+					{
+						replyEditId === info.id
+							? <Form.Control as="textarea"
+							                value={ updateReplyText }
+							                onChange={ onChangeUpdateReply }
+							                style={ { height : '100px' } }/>
+							: <pre>{ info.content }</pre>
+					}
+				</div>
+			</div>
+		) );
+	}
+	
+	function onChangeReply( e ) {
+		setReply( e.target.value );
+	}
+	
+	function onEditModeReply( info ) {
+		setReplyEditId( info.id );
+		setUpdateReplyText( info.content );
+	}
+	
+	function cancelEditReply() {
+		setReplyEditId( -1 );
 	}
 	
 	function setRemnantData( serverData ) {
@@ -149,10 +231,88 @@ export default function RemnantForm( { mode } ) {
 		setImageUrl( urlFile );
 	}
 	
+	function deleteReply( id ) {
+		
+		if ( !confirm( "댓글을 삭제하시겠습니까?" ) ) {
+			return;
+		}
+		
+		console.log( id );
+		
+		//TODO
+		// api response success...
+		
+		// 원래는 그냥 list 를 다시 불러오면 끝난다.
+		// 아래는 UI test code 이다.
+		let list = [ ...replyList ];
+		list.forEach( (item, idx ) => {
+			if ( item.id === id ) {
+				list.splice( idx, 1 );
+			}
+		});
+		setReplyList( list );
+	}
+	
+	function onChangeUpdateReply(e) {
+		let value = e.target.value;
+		console.log( value );
+		setUpdateReplyText( value );
+	}
+	
+	function updateReply( info ) {
+		if ( CommonJs.isEmpty( updateReplyText ) ) {
+			alert( '내용을 입력해주세요.' );
+			return;
+		}
+		info.content = updateReplyText;
+		requestUpdateReplyAPI( info );
+	}
+	function requestUpdateReplyAPI(info) {
+	
+		//TODO
+		// api...response success
+		
+		let list = [ ...replyList ];
+		let findInfo = list.filter( i => i.id === info.id )[0];
+		findInfo = {
+			...findInfo,
+			content : info.content
+		}
+		console.log( "변경된 findInfo :", findInfo );
+		console.log( list );
+		setReplyList( list );
+		setUpdateReplyText( '' );
+		setReplyEditId( -1 );
+	}
+	
 	function onClearImage() {
 		setFile( null );
 		setImageUrl( defaultImgFileName )
 	}
+	
+	async function requestSaveReplyAPI() {
+		
+		if ( CommonJs.isEmpty( reply ) ) {
+			alert( "내용을 입력해주세요" );
+			return;
+		}
+		
+		//TODO
+		// api... response...success...
+		
+		setReplyList( [
+			...replyList,
+			{
+				id        : replyList.length + 1,
+				name      : 'test',
+				content   : reply,
+				inputDate : '2024-11-03 21:03'
+			}
+		] );
+		
+		setReply( '' );
+	}
+	
 	
 	async function requestSaveRemnantAPI() {
 		
@@ -183,14 +343,15 @@ export default function RemnantForm( { mode } ) {
 		const formData = new FormData();
 		
 		let param = {
-			...remnantObj, imageDto : imageObj
+			...remnantObj,
+			imageDto : imageObj
 		}
-		console.log( param );
-		//TODO
-		console.log( "그대로 수정할 때 updateDate 만 수정되는지 체크....." );
 		
-		//////////////////////
-		return;
+		if ( !hasImg ) {
+			param.imageDto = null;
+		}
+		
+		console.log( param );
 		
 		formData.append( "data", JSON.stringify( param ) );
 		
@@ -278,8 +439,8 @@ export default function RemnantForm( { mode } ) {
 									            name="gender"
 									            onChange={ onChangeInputHandler }
 									            label="남"
-									            checked={ remnantObj.gender === '남자' }
-									            value={ '남자' }
+									            checked={ remnantObj.gender === '남' }
+									            value={ '남' }
 									            type={ 'radio' }
 									/>
 									<Form.Check inline
@@ -287,8 +448,8 @@ export default function RemnantForm( { mode } ) {
 									            name="gender"
 									            onChange={ onChangeInputHandler }
 									            label="여"
-									            checked={ remnantObj.gender === '여자' }
-									            value={ '여자' }
+									            checked={ remnantObj.gender === '여' }
+									            value={ '여' }
 									            type={ 'radio' }
 									/>
 								</> : <span>{ remnantObj.gender }</span> }
@@ -510,25 +671,53 @@ export default function RemnantForm( { mode } ) {
 				</tbody>
 			</table>
 		</div>
-		{ !isViewMode && <div className={ "mt-5rem" }>
-			<div className="d-grid gap-2">
-				<Button variant="primary"
-				        size="lg"
-				        onClick={ requestSaveRemnantAPI }>
-					저장
-				</Button>
+		{
+			isViewMode &&
+			<div className="reply-container-wrapper">
+				<div className="reply-input-area d-flex">
+					<div className={ 'f-9' }>
+						<Form.Control
+							as="textarea"
+							name="reply"
+							value={ reply }
+							onChange={ onChangeReply }
+							className="textarea-reply"
+							placeholder=""
+						/>
+					</div>
+					<div className={ 'f-1 p-1' }>
+						<Button variant="secondary"
+						        className="btn-save-reply"
+						        size="sm"
+						        onClick={ requestSaveReplyAPI }>
+							저장
+						</Button>
+					</div>
+				</div>
+				<div className="reply-listcnt-area">
+					<span className="fw-bold">댓글&nbsp;{ replyList.length }</span>
+				</div>
+				<div className="reply-list-area">
+					{ setReplyDOM() }
+				</div>
 			</div>
-		</div> }
-		<Modal show={ modalShow } onHide={ closeModal }>
-			<Modal.Header closeButton>
-				<Modal.Title>알림</Modal.Title>
-			</Modal.Header>
-			<Modal.Body>{ modalBodyTxt }</Modal.Body>
-			<Modal.Footer>
-				<Button variant="secondary" onClick={ closeModal }>
-					닫기
-				</Button>
-			</Modal.Footer>
-		</Modal>
+		}
+		{
+			!isViewMode
+			&&
+			<div className={ "mt-5rem" }>
+				<div className="d-grid gap-2">
+					<Button variant="primary"
+					        size="lg"
+					        onClick={ requestSaveRemnantAPI }>
+						저장
+					</Button>
+				</div>
+			</div>
+		}
+		<AlertModal show={ modalShow }
+		            onHide={ closeModal }
+		            body={ modalBodyTxt }
+		/>
 	</> )
 }

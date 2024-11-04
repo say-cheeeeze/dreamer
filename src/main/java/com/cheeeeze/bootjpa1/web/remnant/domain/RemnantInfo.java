@@ -111,9 +111,9 @@ public class RemnantInfo {
 		this.roadAddr = remnantDTO.getRoadAddr();
 		this.jibunAddr = remnantDTO.getJibunAddr();
 		this.zoneCode = remnantDTO.getZoneCode();
+		
 		this.fullAddr = remnantDTO.getFullAddr();
 		this.etcAddr = remnantDTO.getEtcAddr();
-		
 		this.friend = remnantDTO.getFriend();
 		this.history = remnantDTO.getHistory();
 	}

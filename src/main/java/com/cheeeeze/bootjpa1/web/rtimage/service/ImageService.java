@@ -89,11 +89,7 @@ public class ImageService {
 		ImageInfo imageInfo = imageRepository.findById( imageDto.getId() )
 								   .orElseThrow( () -> new RuntimeException( "등록된 이미지가 없습니다" ) );
 		
-		imageInfo.updateImageInfo( imageDto.getFileFullPath(),
-								   imageDto.getSaveFileName(),
-								   imageDto.getUploadFileName(),
-								   imageDto.getFileSize()
-		);
+		imageInfo.updateImageInfo( imageDto );
 		return imageInfo;
 	}
 	

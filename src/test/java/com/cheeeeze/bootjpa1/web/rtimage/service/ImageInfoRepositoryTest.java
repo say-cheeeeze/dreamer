@@ -69,7 +69,7 @@ class ImageInfoRepositoryTest {
 		ImageInfo imageInfo = byId.get();
 		System.out.println( "imageInfo = " + imageInfo );
 		
-		imageInfo.updateImageInfo( "/save2.png", "save2.png", "upload2.png", 999L );
+		imageInfo.updateImageInfo( imageDTO );
 		ImageInfo save1 = imageRepository.save( imageInfo );
 		
 		System.out.println( "save1 = " + save1 );
