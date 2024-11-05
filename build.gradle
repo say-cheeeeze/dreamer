@@ -48,6 +48,9 @@ dependencies {
 
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-security:3.3.5'
+
+
     implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
 
     // https://mvnrepository.com/artifact/com.google.code.gson/gson
@@ -59,7 +62,7 @@ dependencies {
     implementation "com.querydsl:querydsl-core"
     implementation "com.querydsl:querydsl-collections"
 
-    /* JWT */
+    /* JWT json web token */
     implementation "io.jsonwebtoken:jjwt-api:$JJWT_VERSION"
     runtimeOnly "io.jsonwebtoken:jjwt-impl:$JJWT_VERSION"
     runtimeOnly "io.jsonwebtoken:jjwt-jackson:$JJWT_VERSION"

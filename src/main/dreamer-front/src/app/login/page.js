@@ -100,7 +100,7 @@ export default function Login() {
 				</Form>
 				<div className={ 'mt-3' }>
 					<Link href={ "/regist/teacher" } scroll={true }>교사등록</Link>
-					<Link className={ 'ml-1' } href={ "/" } scroll={ false }>홈으로</Link>
+					<Link className={ 'ml-10' } href={ "/" } scroll={ false }>홈으로</Link>
 				</div>
 			</div>
 		</div>

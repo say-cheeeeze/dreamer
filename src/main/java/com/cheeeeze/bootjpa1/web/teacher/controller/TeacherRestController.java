@@ -4,12 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import com.cheeeeze.bootjpa1.web.remnant.domain.RemnantCnd;
 import com.cheeeeze.bootjpa1.web.teacher.domain.TeacherCnd;
 import com.cheeeeze.bootjpa1.web.teacher.domain.TeacherDTO;
 import com.cheeeeze.bootjpa1.web.teacher.domain.TeacherInfo;
 import com.cheeeeze.bootjpa1.web.teacher.service.TeacherService;
-import com.cheeeeze.bootjpa1.web.util.JWTUtil;
+import com.cheeeeze.bootjpa1.web.autority.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -26,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class TeacherRestController {
 
 	private final TeacherService teacherService;
-	private final JWTUtil jwtUtil;
+	private final JwtTokenProvider jwtTokenProvider;
 	
 	@PostMapping( "save" )
 	public ResponseEntity<?> saveTeacher( @RequestBody TeacherDTO teacherDTO ) {
@@ -44,7 +43,7 @@ public class TeacherRestController {
 			
 			TeacherDTO teacherDto = teacherService.insertTeacher( teacherDTO );
 			
-			String userToken = jwtUtil.generateToken( teacherDTO.getLoginId() );
+			String userToken = jwtTokenProvider.generateToken( teacherDTO.getLoginId() );
 			
 			map.put( "status", HttpStatus.OK.value() );
 			map.put( "teacherDto", teacherDto );
@@ -68,7 +67,7 @@ public class TeacherRestController {
 			Optional<TeacherInfo> byLoginIdAndPassword = teacherService.findByLoginIdAndPassword( teacherDTO.getLoginId(), teacherDTO.getPassword() );
 			if ( byLoginIdAndPassword.isPresent() ) {
 			
-				String userToken = jwtUtil.generateToken( teacherDTO.getLoginId() );
+				String userToken = jwtTokenProvider.generateToken( teacherDTO.getLoginId() );
 				map.put( "status", HttpStatus.OK.value() );
 				map.put( "teacherDto", byLoginIdAndPassword.get() );
 				map.put( "token", userToken );

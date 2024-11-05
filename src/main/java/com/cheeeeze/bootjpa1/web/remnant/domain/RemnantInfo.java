@@ -24,23 +24,26 @@ public class RemnantInfo {
 	@Id
 	@GeneratedValue( strategy = GenerationType.IDENTITY )
 	private Long id;
-	@Column( nullable = false )
+	@Column( nullable = false, length = 20)
 	private String name;
 	@Column( nullable = false )
 	private String grade;
 	@Enumerated(EnumType.STRING)
 	@Column( nullable = false )
 	private Gender gender;
-	@Column( nullable = false )
+	@Column( nullable = false, length = 8)
 	private String birth;
 	
 	/* 필수여부가 아닌 것들 */
+	@Column( length = 11)
 	private String phone;
+	@Column( nullable = false, length = 20)
 	private String school;
 	private String roadAddr;
 	private String jibunAddr;
 	private String zoneCode;
 	private String fullAddr;
+	@Column( length = 30)
 	private String favorite;
 	
 	private String etcAddr;

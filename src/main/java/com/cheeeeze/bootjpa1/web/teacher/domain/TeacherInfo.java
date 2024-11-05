@@ -1,12 +1,16 @@
 package com.cheeeeze.bootjpa1.web.teacher.domain;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Getter
 @Entity
@@ -17,13 +21,15 @@ public class TeacherInfo {
 	@Id
 	@GeneratedValue( strategy = GenerationType.IDENTITY )
 	private Long id;
-	@Column( nullable = false )
+	@Column( nullable = false, length = 10 )
 	private String name;
-	@Column( nullable = false )
+	@Column( nullable = false, unique = true, length = 20, updatable = false )
 	private String loginId;
-	@Column( nullable = false )
+	@Column( nullable = false, length = 100 )
 	private String password;
+	@Column( length = 30 )
 	private String email;
+	@Column( length = 11 )
 	private String phone;
 	@Column( name = "input_date", nullable = false )
 	private LocalDateTime inputDate;
@@ -65,4 +71,5 @@ public class TeacherInfo {
 		teacherDTO.setUpdateDate( this.updateDate );
 		return teacherDTO;
 	}
+	
 }

@@ -263,7 +263,7 @@ export default function TeacherRegist() {
 						<Button type={ "submit" }>등록</Button>
 					</div>
 				</Form>
-				<div className={ 'mt-3' }>
+				<div className={ 'mt-10' }>
 					<Link href={ "/" } scroll={false}>홈으로</Link>
 				</div>
 			</div>

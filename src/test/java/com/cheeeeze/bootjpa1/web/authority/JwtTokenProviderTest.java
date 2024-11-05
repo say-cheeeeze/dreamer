@@ -1,9 +1,10 @@
-package com.cheeeeze.bootjpa1.web.util;
+package com.cheeeeze.bootjpa1.web.authority;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import javax.crypto.SecretKey;
 
+import com.cheeeeze.bootjpa1.web.autority.JwtTokenProvider;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
@@ -18,7 +19,7 @@ import org.springframework.test.context.ActiveProfiles;
 @Slf4j
 @SpringBootTest
 @ActiveProfiles( "test" )
-class JWTUtilTest {
+class JwtTokenProviderTest {
 	
 	@Value( "${service.jwt.token-source}" )
 	String tokenSource;

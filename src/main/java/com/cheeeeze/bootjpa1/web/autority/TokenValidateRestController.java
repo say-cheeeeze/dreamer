@@ -1,4 +1,4 @@
-package com.cheeeeze.bootjpa1.web.util;
+package com.cheeeeze.bootjpa1.web.autority;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping( "/api" )
 public class TokenValidateRestController {
 	
-	private final JWTUtil jwtUtil;
+	private final JwtTokenProvider jwtTokenProvider;
 	
 	/**
 	 * @Description : JWT 토큰 유효성 검사
@@ -29,7 +29,7 @@ public class TokenValidateRestController {
 		map.put( "status", HttpStatus.FORBIDDEN.value() );
 		
 		try {
-			boolean isValid = jwtUtil.validateToken( token, userId );
+			boolean isValid = jwtTokenProvider.validateToken( token, userId );
 			map.put( "isValid", isValid );
 			map.put( "status", HttpStatus.OK.value() );
 		}
