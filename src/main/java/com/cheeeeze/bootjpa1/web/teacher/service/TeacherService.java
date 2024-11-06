@@ -33,7 +33,7 @@ public class TeacherService {
 		
 		TeacherInfo teacherInfo = teacherDTO.toTeacherInfo();
 		TeacherInfo save = teacherRepository.save( teacherInfo );
-		return save.toTeacherDTO();
+		return TeacherDTO.fromEntity( save );
 	}
 	
 	private boolean essentialValidation( TeacherDTO teacherDTO ) {

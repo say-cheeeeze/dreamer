@@ -2,11 +2,15 @@ package com.cheeeeze.bootjpa1.web.teacher.domain;
 
 import java.time.LocalDateTime;
 
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class TeacherDTO {
-
+	
 	private Long id;
 	private String loginId;
 	private String name;
@@ -20,7 +24,7 @@ public class TeacherDTO {
 		TeacherInfo.TeacherInfoBuilder builder = TeacherInfo.builder();
 		builder.id( this.id );
 		builder.name( this.name );
-		builder.loginId(this.loginId);
+		builder.loginId( this.loginId );
 		builder.password( this.password );
 		builder.email( this.email );
 		builder.phone( this.phone );
@@ -28,4 +32,14 @@ public class TeacherDTO {
 		builder.updateDate( this.updateDate );
 		return builder.build();
 	}
+	
+	public static TeacherDTO fromEntity( TeacherInfo teacherInfo ) {
+		return TeacherDTO.builder()
+						 .loginId( teacherInfo.getLoginId() )
+						 .email( teacherInfo.getEmail() )
+						 .password( teacherInfo.getPassword() )
+						 .phone( teacherInfo.getPhone() )
+						 .build();
+	}
+	
 }

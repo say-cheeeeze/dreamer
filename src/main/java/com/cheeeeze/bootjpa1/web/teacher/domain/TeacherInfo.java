@@ -1,21 +1,18 @@
 package com.cheeeeze.bootjpa1.web.teacher.domain;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.List;
 
+import com.cheeeeze.bootjpa1.web.base.Authority;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 @Getter
 @Entity
 @Table( name = "TEACHER" )
-@NoArgsConstructor( access = AccessLevel.PROTECTED )
+@NoArgsConstructor
 public class TeacherInfo {
 	
 	@Id
@@ -35,6 +32,8 @@ public class TeacherInfo {
 	private LocalDateTime inputDate;
 	@Column( name = "update_date", nullable = false )
 	private LocalDateTime updateDate;
+	@Enumerated( EnumType.STRING )
+	private Authority authority;
 	
 	@PrePersist
 	void onPrePersist() {
@@ -48,7 +47,8 @@ public class TeacherInfo {
 	}
 	
 	@Builder
-	public TeacherInfo( Long id, String name, String loginId, String password, String email, String phone, LocalDateTime inputDate, LocalDateTime updateDate ) {
+	public TeacherInfo( Long id, String name, String loginId, String password, String email, String phone,
+						Authority authority, LocalDateTime inputDate, LocalDateTime updateDate ) {
 		this.id = id;
 		this.name = name;
 		this.loginId = loginId;
@@ -57,19 +57,7 @@ public class TeacherInfo {
 		this.phone = phone;
 		this.inputDate = inputDate;
 		this.updateDate = updateDate;
-	}
-	
-	public TeacherDTO toTeacherDTO() {
-		TeacherDTO teacherDTO = new TeacherDTO();
-		teacherDTO.setId( this.id );
-		teacherDTO.setName( this.name );
-		teacherDTO.setLoginId( this.loginId );
-		teacherDTO.setPassword( this.password );
-		teacherDTO.setEmail( this.email );
-		teacherDTO.setPhone( this.phone );
-		teacherDTO.setInputDate( this.inputDate );
-		teacherDTO.setUpdateDate( this.updateDate );
-		return teacherDTO;
+		this.authority = authority;
 	}
 	
 }

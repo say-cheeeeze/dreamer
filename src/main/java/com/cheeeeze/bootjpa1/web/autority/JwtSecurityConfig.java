@@ -1,6 +1,7 @@
 package com.cheeeeze.bootjpa1.web.autority;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.config.annotation.SecurityConfigurer;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.DefaultSecurityFilterChain;
@@ -13,13 +14,17 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  * @Date        : 2024. 11. 5.
 **/
 @RequiredArgsConstructor
-public class JwtSecurityConfig extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
+public class JwtSecurityConfig implements SecurityConfigurer<DefaultSecurityFilterChain, HttpSecurity> {
 
 	private final JwtTokenProvider jwtTokenProvider;
 	
 	@Override
+	public void init( HttpSecurity httpSecurity ) throws Exception {
+	}
+	
+	@Override
 	public void configure( HttpSecurity httpSecurity ) throws Exception {
-		JwtFilter jwtFilter = new JwtFilter(jwtTokenProvider);
+		JwtFilter jwtFilter = new JwtFilter( jwtTokenProvider );
 		httpSecurity.addFilterBefore( jwtFilter, UsernamePasswordAuthenticationFilter.class );
 	}
 }

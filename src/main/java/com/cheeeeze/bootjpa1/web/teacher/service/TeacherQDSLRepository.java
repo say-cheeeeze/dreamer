@@ -35,7 +35,7 @@ public class TeacherQDSLRepository {
 											   .limit( cnd.getSize() )
 											   .fetch();
 		
-		List<TeacherDTO> list = rtList.stream().map( TeacherInfo::toTeacherDTO ).toList();
+		List<TeacherDTO> list = rtList.stream().map( TeacherDTO::fromEntity ).toList();
 		
 		return list;
 	}

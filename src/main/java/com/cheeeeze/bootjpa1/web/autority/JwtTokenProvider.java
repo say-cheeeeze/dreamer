@@ -61,6 +61,8 @@ public class JwtTokenProvider {
 								 .signWith( SECRET_KEY )
 								 .compact();
 		
+		log.info( "accessToken...{}", accessToken );
+		
 		return JwtTokenInfo.builder()
 						   .grantType( "bearer" )
 						   .accessToken( accessToken )

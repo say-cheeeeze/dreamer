@@ -50,7 +50,7 @@ class TeacherServiceTest {
 		TeacherInfo save = teacherRepository.save( teacherInfo );
 		
 		TeacherInfo findTeacher = teacherRepository.findById( save.getId() ).orElse( null );
-		TeacherDTO teacherDTO1 = findTeacher.toTeacherDTO();
+		TeacherDTO teacherDTO1 = TeacherDTO.fromEntity( findTeacher );
 		teacherDTO1.setName( "modi_name" );
 		teacherDTO1.setEmail( "test11111@test.com" );
 		TeacherInfo teacherInfo1 = teacherDTO1.toTeacherInfo();
