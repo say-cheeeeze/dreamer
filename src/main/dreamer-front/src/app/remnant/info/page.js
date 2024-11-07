@@ -38,7 +38,7 @@ export default function page() {
 				location.replace( '/remnant' );
 			}
 		} ).catch( e => {
-			console.error( e );
+			console.log( e );
 			alert( "오류가 발생했습니다." );
 			location.reload();
 		} ).finally( () => {

@@ -9,11 +9,14 @@ import MyPagination from "@/app/components/pagination";
 import LoadingSpinTD from "@/app/components/LoadingSpinTD";
 import { usePathname, useRouter, useSearchParams, } from "next/navigation";
 import { Form } from "react-bootstrap";
-import axios from "axios";
 import constant from '@/app/utils/constant';
+import CommonJs from "@lib/common";
+import axiosProvider from "@lib/axiosProvider";
+import { StatusCodes } from "http-status-codes";
 
 export default function RemnantListPage() {
 	
+	const $axios = axiosProvider();
 	const router = useRouter();
 	const pathname = usePathname(); // 현재 경로를 가져옴
 	const searchParams = useSearchParams(); // next/navigation의 useSearchParams 사용
@@ -76,20 +79,27 @@ export default function RemnantListPage() {
 			name  : searchText,
 			grade : searchText
 		}
-		axios.post( url, param ).then( res => {
+		
+		$axios.post( url, param ).then( res => {
 			
+			if ( CommonJs.isEmpty( res.data.listInfo ) ) {
+				return;
+			}
+
 			setIsFirst( res.data.listInfo.isFirst );
 			setIsLast( res.data.listInfo.isLast );
 			setTotalCount( res.data.listInfo.totalCount );
 			reformRtList( res.data.listInfo.list );
-			
+
 			// 마지막 페이지네이션 번호 계산
 			setTotalPage( Math.ceil( res.data.listInfo.totalCount / pageSize ) );
-			
+
 		} ).catch( e => {
-			alert( "오류가 발생했습니다." );
-			console.error( e );
-			
+			console.log( e );
+			if ( StatusCodes.UNAUTHORIZED !==  e.status ) {
+				alert( "오류가 발생했습니다" );
+			}
+
 		} ).finally( () => {
 			setLoading( false );
 		} );

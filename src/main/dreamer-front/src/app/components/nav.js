@@ -3,25 +3,23 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import CommonJs from "@lib/common";
+import CustomLink from "@/app/components/customLink";
 
 export default function DreamerNav() {
 	
 	const router = useRouter();
 	const [ isLogin, setIsLogin ] = useState( false );
 	
-	
 	const logout = () => {
 		localStorage.removeItem( 'authToken' );
 		localStorage.removeItem( 'userId' );
-		location.href = '/';
+		router.push( '/' );
 	}
 	
 	useEffect( () => {
 		
 		let authToken = localStorage.getItem( 'authToken' );
 		let userId = localStorage.getItem( 'userId' );
-		console.log( authToken );
-		console.log( userId );
 		
 		if ( CommonJs.isNotEmpty( authToken ) && CommonJs.isNotEmpty( userId ) ) {
 			setIsLogin( true );
@@ -33,13 +31,13 @@ export default function DreamerNav() {
 		<>
 			<div className={ "navi-wrapper-div" }>
 				<div>
-					<Link href="/" scroll={ false }>Home</Link>
+					<CustomLink url='/' text='Home'/>
 				</div>
 				<div>
-					<Link href="/remnant" scroll={ false }>Remnant</Link>
+					<CustomLink url='/remnant' text='Remnant'/>
 				</div>
 				<div>
-					<Link href="/teacher" scroll={ false }>Teacher</Link>
+					<CustomLink url='/teacher' text='Teacher'/>
 				</div>
 				<div className={ "login-wrapper" }>
 					{ isLogin ?

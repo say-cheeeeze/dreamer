@@ -85,7 +85,7 @@ export default function TeacherListPage() {
 			
 		} ).catch( e => {
 			alert( "오류가 발생했습니다." );
-			console.error( e );
+			console.log( e );
 			
 		} ).finally( () => {
 			setLoading( false );

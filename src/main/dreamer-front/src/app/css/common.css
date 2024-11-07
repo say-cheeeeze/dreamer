@@ -263,6 +263,9 @@ table.tb-rt span.rt-name {
 .navi-wrapper-div .login-wrapper {
     float:right;
 }
+.navi-wrapper-div span.navi-span {
+    cursor: pointer;
+}
 .navi-wrapper-div .login-wrapper span {
     cursor:pointer;
 }

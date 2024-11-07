@@ -92,7 +92,7 @@ export default function RemnantForm( { mode } ) {
 			setRemnantData( res.data.info );
 			
 		} ).catch( e => {
-			console.error( e );
+			console.log( e );
 			alert( "오류가 발생했습니다" );
 			
 		} ).finally( () => {
@@ -373,7 +373,7 @@ export default function RemnantForm( { mode } ) {
 				location.reload();
 			}
 		} ).catch( e => {
-			console.error( e );
+			console.log( e );
 			alert( "오류가 발생했습니다" );
 		} );
 	}

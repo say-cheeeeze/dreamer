@@ -70,7 +70,7 @@ export default function TeacherRegist() {
 			}
 			
 		} ).catch( e => {
-			console.error( e );
+			console.log( e );
 			alert( "오류가 발생했습니다" );
 			
 		} ).finally( () => {
