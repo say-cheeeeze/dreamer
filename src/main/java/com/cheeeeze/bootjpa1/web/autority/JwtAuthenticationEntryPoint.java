@@ -4,10 +4,12 @@ import java.io.IOException;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 	
@@ -17,7 +19,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 						  HttpServletResponse response,
 						  AuthenticationException authException ) throws IOException {
 	
-		// 유효하지 않은 자격증명일 때 401
+		log.info( "유효하지 않은 자격증명입니다." );
 		response.sendError( HttpServletResponse.SC_UNAUTHORIZED );
 	}
 }
