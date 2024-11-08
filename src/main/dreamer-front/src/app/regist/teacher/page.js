@@ -42,12 +42,13 @@ export default function TeacherRegist() {
 			return;
 		}
 		
-		requestSaveAPI();
+		requestSignupAPI();
 	}
 	
-	function requestSaveAPI() {
+	// 회원가입 요청
+	function requestSignupAPI() {
 		
-		const URL_TEACHER_SAVE = '/api/teacher/save';
+		const URL_SIGNUP = '/auth/signup';
 		const teacherDTO = {
 			loginId  : formData.id,
 			name     : formData.name,
@@ -56,17 +57,18 @@ export default function TeacherRegist() {
 			email    : formData.email
 		}
 		
-		axios.post( URL_TEACHER_SAVE, teacherDTO ).then( res => {
+		axios.post( URL_SIGNUP, teacherDTO ).then( res => {
 			
-			if ( res.data.status === StatusCodes.OK ) {
-				localStorage.setItem( "authToken", res.data.token );
-				localStorage.setItem( "userId", res.data.teacherDto.loginId );
-				router.push( '/regist/welcome', { scroll : false } );
+			console.log( res );
+			
+			if ( StatusCodes.CONFLICT === res.data.status ) {
+				return alert( res.data.msg );
 			}
 			
-			// 중복ID
-			if ( res.data.status === StatusCodes.CONFLICT ) {
-				alert( res.data.message );
+			if ( StatusCodes.OK === res.data.status ) {
+				localStorage.setItem( "authToken", res.data.token.accessToken );
+				localStorage.setItem( "userId", res.data.user.loginId );
+				router.push( '/regist/welcome', { scroll : false } );
 			}
 			
 		} ).catch( e => {

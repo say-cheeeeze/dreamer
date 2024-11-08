@@ -3,8 +3,7 @@ package com.cheeeeze.bootjpa1.web.remnant.domain;
 import java.time.LocalDateTime;
 
 import com.cheeeeze.bootjpa1.web.rtimage.domain.ImageDTO;
-import com.cheeeeze.bootjpa1.web.util.Gender;
-import jakarta.persistence.Column;
+import com.cheeeeze.bootjpa1.web.base.vo.Gender;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

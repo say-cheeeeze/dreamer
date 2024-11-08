@@ -7,8 +7,10 @@ import CommonJs from "@lib/common";
 import axios from "axios";
 import { StatusCodes } from "http-status-codes";
 import { useRouter } from "next/navigation";
+import axiosProvider from "@lib/axiosProvider";
 
 export default function Login() {
+	const $axios = axiosProvider();
 	
 	const [ user, setUser ] = useState( {
 		userId   : '',
@@ -26,31 +28,31 @@ export default function Login() {
 			return;
 		}
 		
-		console.log( "api 보내줭", user );
 		let param = {
-			loginId : user.userId,
+			loginId  : user.userId,
 			password : user.password
 		}
 		
-		axios.post( '/api/teacher/login', param ).then( res => {
-			if ( res.data.status === StatusCodes.NOT_FOUND ) {
-				alert( "일치하는 회원이 없습니다" );
-				return;
+		$axios.post( '/auth/login', param ).then( res => {
+			
+			if ( StatusCodes.OK === res.status ) {
+			  localStorage.setItem( "authToken", res.data.accessToken );
+			  localStorage.setItem( "userId", user.userId );
+			  router.push( '/' );
 			}
 			
-			if ( res.data.status === StatusCodes.OK ) {
-				localStorage.setItem( "authToken", res.data.token );
-				localStorage.setItem( "userId", res.data.teacherDto.loginId );
-				router.push( '/', { scroll : false } );
-			}
-			
-		}).catch( e => {
-			console.log( e );
-			alert( "오류가 발생했습니다" );
-			
-		}).finally( () => {
+		} ).catch( e => {
+		  
+		  if ( StatusCodes.UNAUTHORIZED === e.response.status ) {
+		      alert( e.response.data.msg );
+		  }
+		  else {
+		      alert( "오류가 발생했습니다" );
+		  }
+		} )
+		.finally( () => {
 		
-		});
+		} );
 	}
 	
 	const onChangeInputEvent = ( e ) => {
@@ -64,10 +66,10 @@ export default function Login() {
 				return;
 			}
 		}
-		setUser({
+		setUser( {
 			...user,
-			[name] : value
-		});
+			[ name ] : value
+		} );
 	}
 	
 	return <>
@@ -91,7 +93,7 @@ export default function Login() {
 						              className={ 'form-control' }
 						              type="password"
 						              autoComplete={ 'off' }
-						              name='password'
+						              name="password"
 						              value={ user.password }
 						              onChange={ onChangeInputEvent }
 						/>
@@ -99,7 +101,7 @@ export default function Login() {
 					<Button type={ "submit" }>로그인</Button>
 				</Form>
 				<div className={ 'mt-3' }>
-					<Link href={ "/regist/teacher" } scroll={true }>교사등록</Link>
+					<Link href={ "/regist/teacher" } scroll={ true }>교사등록</Link>
 					<Link className={ 'ml-10' } href={ "/" } scroll={ false }>홈으로</Link>
 				</div>
 			</div>

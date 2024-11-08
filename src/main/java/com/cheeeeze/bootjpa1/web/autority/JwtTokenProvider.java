@@ -145,6 +145,13 @@ public class JwtTokenProvider {
 			
 			// 추가로 Issuer 가 다른 경우에도 예외처리해주면 될 것 같다.
 			Claims payload = claimsJws.getPayload();
+			
+			Date expiration = payload.getExpiration();
+			long remainingTimeMillis = expiration.getTime() - System.currentTimeMillis();
+			long remainingTimeMinutes = remainingTimeMillis / (1000 * 60);
+			log.info( "remainingTimeMinutes : {} minutes ", remainingTimeMinutes  );
+			
+			
 			String issuer = payload.getIssuer();
 			if ( !issuer.equals( applicationName ) ) {
 				throw new RuntimeException( "발급처가 유효하지 않습니다" );

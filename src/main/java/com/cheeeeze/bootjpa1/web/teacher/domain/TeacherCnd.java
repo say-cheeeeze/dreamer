@@ -2,7 +2,7 @@ package com.cheeeeze.bootjpa1.web.teacher.domain;
 
 import java.time.LocalDateTime;
 
-import com.cheeeeze.bootjpa1.web.base.SearchCnd;
+import com.cheeeeze.bootjpa1.web.base.vo.SearchCnd;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

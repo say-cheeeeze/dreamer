@@ -1,14 +1,11 @@
 package com.cheeeeze.bootjpa1.web.userauth.service;
 
-import java.util.Optional;
-
 import com.cheeeeze.bootjpa1.web.autority.JwtTokenInfo;
-import com.cheeeeze.bootjpa1.web.teacher.domain.TeacherDTO;
+import com.cheeeeze.bootjpa1.web.base.util.DuplicationException;
 import com.cheeeeze.bootjpa1.web.userauth.domain.UserRequestDTO;
 import com.cheeeeze.bootjpa1.web.userauth.domain.UserResponseDTO;
 import com.cheeeeze.bootjpa1.web.autority.JwtTokenProvider;
 import com.cheeeeze.bootjpa1.web.teacher.domain.TeacherInfo;
-import com.cheeeeze.bootjpa1.web.teacher.service.TeacherService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,13 +27,13 @@ public class AuthService {
 	public UserResponseDTO signup( UserRequestDTO userRequestDTO ) {
 		
 		if ( userRepository.existsByLoginId( userRequestDTO.getLoginId() ) ) {
-			throw new RuntimeException( "이미 가입된 아이디입니다" );
+			throw new DuplicationException( "이미 가입된 아이디입니다" );
 		}
 		TeacherInfo teacherInfo = userRequestDTO.toTeacher( passwordEncoder );
 		return UserResponseDTO.fromInfo( userRepository.save( teacherInfo ) );
 	}
 	
-	public JwtTokenInfo login( UserRequestDTO userRequestDTO ) {
+	public JwtTokenInfo setTokenByUserRequest( UserRequestDTO userRequestDTO ) {
 		
 		UsernamePasswordAuthenticationToken authenticationToken = userRequestDTO.toAuthentication();
 		

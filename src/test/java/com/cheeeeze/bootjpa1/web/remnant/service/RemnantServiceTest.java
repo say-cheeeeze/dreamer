@@ -9,7 +9,7 @@ import com.cheeeeze.bootjpa1.web.remnant.domain.RemnantInfo;
 import com.cheeeeze.bootjpa1.web.rtimage.domain.ImageDTO;
 import com.cheeeeze.bootjpa1.web.rtimage.service.ImageInfoRepository;
 import com.cheeeeze.bootjpa1.web.rtimage.service.ImageService;
-import com.cheeeeze.bootjpa1.web.util.Gender;
+import com.cheeeeze.bootjpa1.web.base.vo.Gender;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

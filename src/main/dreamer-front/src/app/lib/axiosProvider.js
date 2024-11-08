@@ -4,7 +4,14 @@ import { useRouter } from "next/navigation";
 
 const $axios = () => {
 	const router = useRouter();
-	const _axios = axios.create();
+	const _axios = axios.create({
+		headers : {
+			Authorization : `Bearer ${ localStorage.getItem( "authToken" )}`
+		},
+		params : {
+			userId : localStorage.getItem( "userId" )
+		}
+	});
 	
 	_axios.interceptors.request.use(
 		res => {

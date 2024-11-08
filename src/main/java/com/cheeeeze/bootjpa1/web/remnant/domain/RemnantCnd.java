@@ -2,8 +2,8 @@ package com.cheeeeze.bootjpa1.web.remnant.domain;
 
 import java.time.LocalDateTime;
 
-import com.cheeeeze.bootjpa1.web.base.SearchCnd;
-import com.cheeeeze.bootjpa1.web.util.Gender;
+import com.cheeeeze.bootjpa1.web.base.vo.SearchCnd;
+import com.cheeeeze.bootjpa1.web.base.vo.Gender;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

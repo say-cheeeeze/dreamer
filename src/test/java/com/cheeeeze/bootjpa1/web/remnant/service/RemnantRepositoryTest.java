@@ -10,7 +10,7 @@ import com.cheeeeze.bootjpa1.web.remnant.domain.RemnantDTO;
 import com.cheeeeze.bootjpa1.web.remnant.domain.RemnantInfo;
 import com.cheeeeze.bootjpa1.web.rtimage.domain.ImageInfo;
 import com.cheeeeze.bootjpa1.web.rtimage.service.ImageInfoRepository;
-import com.cheeeeze.bootjpa1.web.util.Gender;
+import com.cheeeeze.bootjpa1.web.base.vo.Gender;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.assertj.core.api.Assertions;

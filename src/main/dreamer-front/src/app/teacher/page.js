@@ -9,9 +9,12 @@ import LoadingSpinTD from "@/app/components/LoadingSpinTD";
 import { usePathname, useRouter, useSearchParams, } from "next/navigation";
 import axios from "axios";
 import constant from '@/app/utils/constant';
+import axiosProvider from "@lib/axiosProvider";
+import CommonJs from "@lib/common";
 
 export default function TeacherListPage() {
 	
+	const $axios = axiosProvider();
 	const router = useRouter();
 	const pathname = usePathname(); // 현재 경로를 가져옴
 	const searchParams = useSearchParams(); // next/navigation의 useSearchParams 사용
@@ -73,7 +76,12 @@ export default function TeacherListPage() {
 			size : pageSize,
 			name : searchText
 		}
-		axios.post( url, param ).then( res => {
+		
+		$axios.post( url, param ).then( res => {
+			
+			if ( CommonJs.isEmpty( res.data.listInfo ) ) {
+				return;
+			}
 			
 			setIsFirst( res.data.listInfo.isFirst );
 			setIsLast( res.data.listInfo.isLast );

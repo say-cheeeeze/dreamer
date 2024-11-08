@@ -4,6 +4,9 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import CommonJs from "@lib/common";
 import CustomLink from "@/app/components/customLink";
+import axios from "axios";
+import { StatusCodes } from "http-status-codes";
+import Common from "@lib/common";
 
 export default function DreamerNav() {
 	
@@ -13,17 +16,42 @@ export default function DreamerNav() {
 	const logout = () => {
 		localStorage.removeItem( 'authToken' );
 		localStorage.removeItem( 'userId' );
-		router.push( '/' );
+		setIsLogin( false );
+		location.href = '/';
+		
 	}
 	
-	useEffect( () => {
+	function validateToken() {
 		
 		let authToken = localStorage.getItem( 'authToken' );
 		let userId = localStorage.getItem( 'userId' );
 		
-		if ( CommonJs.isNotEmpty( authToken ) && CommonJs.isNotEmpty( userId ) ) {
-			setIsLogin( true );
+		if ( CommonJs.isEmpty( authToken ) || Common.isEmpty( userId ) ) {
+			return;
 		}
+		
+		axios.post( '/auth/validate-token',
+			{},
+			{
+				headers : {
+					Authorization : `Bearer ${ localStorage.getItem( 'authToken' ) }`
+				},
+				params  : {
+					userId : localStorage.getItem( 'userId' )
+				}
+			}
+		).then( res => {
+			
+			if ( res.data.isValid && StatusCodes.OK === res.data.status ) {
+				setIsLogin( true );
+			}
+		} );
+	}
+	
+	useEffect( () => {
+		
+		validateToken();
+		
 		
 	}, [] );
 	
@@ -31,13 +59,13 @@ export default function DreamerNav() {
 		<>
 			<div className={ "navi-wrapper-div" }>
 				<div>
-					<CustomLink url='/' text='Home'/>
+					<CustomLink url="/" text="Home"/>
 				</div>
 				<div>
-					<CustomLink url='/remnant' text='Remnant'/>
+					<CustomLink url="/remnant" text="Remnant"/>
 				</div>
 				<div>
-					<CustomLink url='/teacher' text='Teacher'/>
+					<CustomLink url="/teacher" text="Teacher"/>
 				</div>
 				<div className={ "login-wrapper" }>
 					{ isLogin ?

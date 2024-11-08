@@ -64,7 +64,7 @@ public class JwtFilter extends OncePerRequestFilter {
 		
 		log.info( "REQUEST URI : {}", requestURI );
 		
-		if ( requestURI.startsWith( "/auth" ) || requestURI.startsWith( "/api" ) ) {
+		if ( requestURI.startsWith( "/auth" ) ) {
 			filterChain.doFilter( request, response );
 			return;
 		}

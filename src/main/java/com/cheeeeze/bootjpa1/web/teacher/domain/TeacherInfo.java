@@ -2,9 +2,8 @@ package com.cheeeeze.bootjpa1.web.teacher.domain;
 
 import java.time.LocalDateTime;
 
-import com.cheeeeze.bootjpa1.web.base.Authority;
+import com.cheeeeze.bootjpa1.web.base.vo.Authority;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

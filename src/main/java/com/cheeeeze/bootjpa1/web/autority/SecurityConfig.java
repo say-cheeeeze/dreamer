@@ -47,13 +47,23 @@ public class SecurityConfig {
 		http
 //			.cors( cors -> cors.configurationSource( corsConfigurationSource() ))
 			.csrf( AbstractHttpConfigurer::disable )
-			.authorizeHttpRequests( authReq -> authReq.requestMatchers( "/api/**" ).hasAnyRole( "TEACHER", "ADMIN" )
-													  .requestMatchers( "/auth/**" ).permitAll()
-													  .anyRequest().authenticated()
+			.authorizeHttpRequests( authReq -> authReq
+												  	// 모든 /api 는 교사와 관리자만 요청할 수 있다.
+												   	.requestMatchers( "/api/**" ).hasAnyRole( "TEACHER", "ADMIN" )
+													
+												 	// 권한 체크 API 는 권한없이 가능해야하므로
+													.requestMatchers( "/auth/**" ).permitAll()
+													
+													// 나머지 : 인증이 있어야한다.
+													.anyRequest().authenticated()
 			)
 			.exceptionHandling(
-				exceptionHandling -> exceptionHandling.authenticationEntryPoint( jwtAuthenticationEntryPoint )
-													  .accessDeniedHandler( jwtAccessDenyHandler )
+				exceptionHandling -> exceptionHandling
+										 // 인증되지 않은 접근자에게 대한 handler(주로401)
+										 .authenticationEntryPoint( jwtAuthenticationEntryPoint )
+										 
+										 // 인증은 됐는데 권한이 없는 접근에 대한 handler(주로403)
+										 .accessDeniedHandler( jwtAccessDenyHandler )
 			)
 			.apply( new JwtSecurityConfig( jwtTokenProvider ) );
 		
