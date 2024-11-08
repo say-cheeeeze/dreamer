@@ -1,4 +1,4 @@
-package com.cheeeeze.bootjpa1.web.util;
+package com.cheeeeze.bootjpa1.web.base.vo;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 

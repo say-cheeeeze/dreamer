@@ -1,4 +1,4 @@
-package com.cheeeeze.bootjpa1.web.base;
+package com.cheeeeze.bootjpa1.web.base.vo;
 
 import lombok.Getter;
 import lombok.Setter;
